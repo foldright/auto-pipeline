@@ -34,11 +34,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
             <version>2.3.31</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.squareup</groupId>
@@ -51,12 +53,6 @@
             <version>4.3.1</version>
         </dependency>
 
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport</artifactId>
-            <version>4.1.67.Final</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>io.github.jbock-java</groupId>
             <artifactId>compile-testing</artifactId>
