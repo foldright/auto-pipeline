@@ -56,9 +56,10 @@ class AutoPipelineProcessor : AbstractProcessor() {
         val classDescriptor = AutoPipelineClassDescriptor(elements, types, element)
         val generator = SourceGenerator(classDescriptor, filer)
 
-        generator.genPipelineInterface()
+        generator.genPipeline()
         generator.genHandlerContextInterface()
         generator.genHandlerInterface()
+        generator.genAbstractHandlerContextClass()
     }
 
     override fun getSupportedAnnotationTypes(): Set<String> {
