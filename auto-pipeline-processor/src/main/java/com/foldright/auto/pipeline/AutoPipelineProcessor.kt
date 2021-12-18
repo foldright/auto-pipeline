@@ -60,6 +60,7 @@ class AutoPipelineProcessor : AbstractProcessor() {
         generator.genHandlerContextInterface()
         generator.genHandlerInterface()
         generator.genAbstractHandlerContextClass()
+        generator.genDefaultHandlerContextClass()
     }
 
     override fun getSupportedAnnotationTypes(): Set<String> {

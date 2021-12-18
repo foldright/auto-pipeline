@@ -1,6 +1,5 @@
 package com.foldright.example.config.pipeline
 
-import com.foldright.example.config.DefaultConfigSourcePipeline
 import com.foldright.example.config.handler.MapConfigSourceHandler
 import com.foldright.example.config.handler.PlaceholderConfigSourceHandler
 import com.foldright.example.config.handler.SystemConfigSourceHandler
@@ -16,7 +15,7 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = DefaultConfigSourcePipeline()
+        val pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
@@ -31,7 +30,7 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = DefaultConfigSourcePipeline()
+        val pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
@@ -46,7 +45,7 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2\${a}"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = DefaultConfigSourcePipeline()
+        val pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
@@ -61,7 +60,7 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2\${a}", "c" to "3\${b}"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = DefaultConfigSourcePipeline()
+        val pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
@@ -76,7 +75,7 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2", "java.home" to "3"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = DefaultConfigSourcePipeline()
+        val pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)

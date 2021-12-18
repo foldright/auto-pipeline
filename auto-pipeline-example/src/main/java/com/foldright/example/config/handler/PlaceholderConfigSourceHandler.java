@@ -1,7 +1,7 @@
 package com.foldright.example.config.handler;
 
-import com.foldright.example.config.ConfigSourceHandler;
-import com.foldright.example.config.ConfigSourceHandlerContext;
+import com.foldright.example.config.pipeline.ConfigSourceHandler;
+import com.foldright.example.config.pipeline.ConfigSourceHandlerContext;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.regex.Matcher;
