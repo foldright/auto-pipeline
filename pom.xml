@@ -12,6 +12,7 @@
 	<modules>
 		<module>auto-pipeline</module>
 		<module>auto-pipeline-processor</module>
+		<module>auto-pipeline-example</module>
 	</modules>
 
 	<licenses>

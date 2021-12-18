@@ -55,6 +55,7 @@ class AutoPipelineProcessor : AbstractProcessor() {
     private fun doProcess(element: TypeElement) {
         val classDescriptor = AutoPipelineClassDescriptor(elements, types, element)
         val generator = SourceGenerator(classDescriptor, filer)
+
         generator.genPipelineInterface()
         generator.genHandlerContextInterface()
         generator.genHandlerInterface()
