@@ -7,6 +7,7 @@ import io.kotest.core.spec.style.AnnotationSpec
 class AutoPipelineProcessorTest : AnnotationSpec() {
 
     @Test
+    @Ignore
     fun test() {
         val configInterface = JavaFileObjects.forResource("test1/ConfigSource.java")
 
