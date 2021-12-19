@@ -384,7 +384,7 @@
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
-					<version>4.0.0</version>
+					<version>4.9.10</version>
 				</plugin>
 				<plugin>
 					<groupId>com.github.spotbugs</groupId>
@@ -412,7 +412,7 @@
 							<execution>
 								<id>attach-sources</id>
 								<goals>
-									<goal>jar</goal>
+									<goal>jar-no-fork</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -421,7 +421,7 @@
 						<artifactId>maven-javadoc-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>attach-javadoc</id>
+								<id>attach-javadocs</id>
 								<goals>
 									<goal>jar</goal>
 								</goals>
