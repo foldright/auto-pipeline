@@ -16,15 +16,15 @@ import javax.lang.model.util.Types
 class AutoPipelineClassDescriptor(
     elements: Elements,
     private val types: Types,
-    element: TypeElement
+    val entityElement: TypeElement
 ) {
     // entity description
-    private val entityPackage = elements.getPackageOf(element).toString()
-    private val entitySimpleName = element.simpleName.toString()
-    val entityType: TypeName = TypeName.get(element.asType())
-    val entityTypeVariables = element.typeParameters.map { TypeVariableName.get(it) }
+    private val entityPackage = elements.getPackageOf(entityElement).toString()
+    private val entitySimpleName = entityElement.simpleName.toString()
+    val entityType: TypeName = TypeName.get(entityElement.asType())
+    val entityTypeVariables = entityElement.typeParameters.map { TypeVariableName.get(it) }
     val entityTypeWithTypeParameters: ParameterizedTypeName =
-        ParameterizedTypeName.get(ClassName.get(element), *entityTypeVariables.toTypedArray())
+        ParameterizedTypeName.get(ClassName.get(entityElement), *entityTypeVariables.toTypedArray())
 
 
     // new package for all pipeline source code
@@ -58,7 +58,7 @@ class AutoPipelineClassDescriptor(
     val handlerTypeName: ClassName = ClassName.get(newPackageName, handlerName)
 
 
-    val entityOperations = elements.getAllMembers(element)
+    val entityOperations = elements.getAllMembers(entityElement)
         .filterNotNull()
         .filterIsInstance(ExecutableElement::class.java)
         .filter {
