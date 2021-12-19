@@ -198,7 +198,7 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
             .writeTo(filer)
     }
 
-    private fun genPipelineOverrideMethods(statement: (AutoPipelineMethodDescriptor) -> String): List<MethodSpec> =
+    private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
         descriptor.operations.map {
             MethodSpec.methodBuilder(it.methodName)
                 .addModifiers(PUBLIC)

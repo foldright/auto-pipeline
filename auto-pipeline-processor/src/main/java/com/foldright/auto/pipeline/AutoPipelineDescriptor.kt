@@ -23,10 +23,10 @@ class AutoPipelineClassDescriptor(
         .filter {
             it.modifiers.contains(PUBLIC) && it.modifiers.contains(ABSTRACT)
         }
-        .map { AutoPipelineMethodDescriptor(it) }
+        .map { AutoPipelineOperatorsDescriptor(it) }
 }
 
-class AutoPipelineMethodDescriptor(private val executableElement: ExecutableElement) {
+class AutoPipelineOperatorsDescriptor(private val executableElement: ExecutableElement) {
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
     val params: MutableList<out VariableElement> = executableElement.parameters
