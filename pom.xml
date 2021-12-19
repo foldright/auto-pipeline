@@ -304,10 +304,6 @@
 				</executions>
 			</plugin>
 			<plugin>
-				<groupId>com.github.spotbugs</groupId>
-				<artifactId>spotbugs-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
 				<!--
 					config example: https://github.com/mojohaus/versions-maven-plugin/issues/157#issuecomment-306041074
 				-->
@@ -385,11 +381,6 @@
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>4.9.10</version>
-				</plugin>
-				<plugin>
-					<groupId>com.github.spotbugs</groupId>
-					<artifactId>spotbugs-maven-plugin</artifactId>
-					<version>4.2.2</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -471,35 +462,6 @@
 								<phase>verify</phase>
 								<goals>
 									<goal>sign</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>lint</id>
-			<activation>
-				<property>
-					<name>performRelease</name>
-					<value>true</value>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<!--
-						Spotbugs support @SuppressWarnings
-						https://github.com/spotbugs/spotbugs/issues/737#issuecomment-416118033
-					-->
-					<plugin>
-						<groupId>com.github.spotbugs</groupId>
-						<artifactId>spotbugs-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>check</goal>
 								</goals>
 							</execution>
 						</executions>
