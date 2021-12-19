@@ -6,30 +6,15 @@ import org.apache.commons.lang3.StringUtils
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier.*
 
-class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, private val filer: Filer) {
-
-    private val newPackageName = "${descriptor.packageName}.pipeline"
-
-    private val pipelineName = "${descriptor.simpleName}Pipeline"
-    private val handlerContextName = "${descriptor.simpleName}HandlerContext"
-    private val abstractHandlerContextName = "Abstract${handlerContextName}"
-    private val defaultHandlerContextName = "Default${handlerContextName}"
-    private val handlerName = "${descriptor.simpleName}Handler"
-
-    private val pipelineTypeName = ClassName.get(newPackageName, pipelineName)
-    private val handlerContextTypeName = ClassName.get(newPackageName, handlerContextName)
-    private val abstractHandlerContextTypeName = ClassName.get(newPackageName, abstractHandlerContextName)
-    private val defaultHandlerContextTypeName = ClassName.get(newPackageName, defaultHandlerContextName)
-    private val handlerTypeName = ClassName.get(newPackageName, handlerName)
-
-    private val listTypeName = ClassName.get("java.util", "List")
+class SourceGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
 
     fun genPipeline() {
-        val pipelineClassBuilder = TypeSpec.classBuilder(pipelineName)
+        val pipelineClassBuilder = TypeSpec.classBuilder(desc.pipelineTypeName)
+            .addTypeVariables(desc.entityTypeVariables)
             .addModifiers(PUBLIC)
-            .addSuperinterface(descriptor.typeMirror)
-            .addField(abstractHandlerContextTypeName, "head", PRIVATE, FINAL)
-            .addField(abstractHandlerContextTypeName, "tail", PRIVATE, FINAL)
+            .addSuperinterface(desc.entityType)
+            .addField(desc.abstractHandlerContextTypeName, "head", PRIVATE, FINAL)
+            .addField(desc.abstractHandlerContextTypeName, "tail", PRIVATE, FINAL)
 
         val pipelineConstructor = MethodSpec.constructorBuilder()
             .addModifiers(PUBLIC)
@@ -54,12 +39,12 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val addFirstMethod = MethodSpec.methodBuilder("addFirst")
             .addModifiers(PUBLIC, SYNCHRONIZED)
-            .addParameter(handlerTypeName, "handler")
-            .returns(pipelineTypeName)
+            .addParameter(desc.handlerTypeName, "handler")
+            .returns(desc.pipelineTypeName)
             .addCode(
                 """
-                $abstractHandlerContextName newCtx = new ${defaultHandlerContextName}(this, handler);
-                $abstractHandlerContextName nextCtx = head.next;
+                ${desc.abstractHandlerContextTypeName.simpleName()} newCtx = new ${desc.defaultHandlerContextTypeName.simpleName()}(this, handler);
+                ${desc.abstractHandlerContextTypeName.simpleName()} nextCtx = head.next;
                 head.next = newCtx;
                 newCtx.prev = head;
                 newCtx.next = nextCtx;
@@ -73,8 +58,8 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val addFirstListMethod = MethodSpec.methodBuilder("addFirst")
             .addModifiers(PUBLIC, SYNCHRONIZED)
-            .addParameter(ParameterizedTypeName.get(listTypeName, handlerTypeName), "handlers")
-            .returns(pipelineTypeName)
+            .addParameter(ParameterizedTypeName.get(desc.listTypeName, desc.handlerTypeName), "handlers")
+            .returns(desc.pipelineTypeName)
             .addCode(
                 """
                 if (handlers == null || handlers.isEmpty()) {
@@ -93,12 +78,12 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val addLastMethod = MethodSpec.methodBuilder("addLast")
             .addModifiers(PUBLIC, SYNCHRONIZED)
-            .addParameter(handlerTypeName, "handler")
-            .returns(pipelineTypeName)
+            .addParameter(desc.handlerTypeName, "handler")
+            .returns(desc.pipelineTypeName)
             .addCode(
                 """
-                $abstractHandlerContextName newCtx = new ${defaultHandlerContextName}(this, handler);
-                $abstractHandlerContextName prevCtx = tail.prev;
+                ${desc.abstractHandlerContextTypeName.simpleName()} newCtx = new ${desc.defaultHandlerContextTypeName.simpleName()}(this, handler);
+                ${desc.abstractHandlerContextTypeName.simpleName()} prevCtx = tail.prev;
                 
                 newCtx.prev = prevCtx;
                 newCtx.next = tail;
@@ -112,8 +97,8 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val addLastListMethod = MethodSpec.methodBuilder("addLast")
             .addModifiers(PUBLIC, SYNCHRONIZED)
-            .addParameter(ParameterizedTypeName.get(listTypeName, handlerTypeName), "handlers")
-            .returns(pipelineTypeName)
+            .addParameter(ParameterizedTypeName.get(desc.listTypeName, desc.handlerTypeName), "handlers")
+            .returns(desc.pipelineTypeName)
             .addCode(
                 """
                 if (handlers == null || handlers.isEmpty()) {
@@ -132,10 +117,10 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val headContextClass = TypeSpec.classBuilder("HeadContext")
             .addModifiers(PRIVATE, STATIC)
-            .superclass(abstractHandlerContextTypeName)
+            .superclass(desc.abstractHandlerContextTypeName)
             .addMethod(
                 MethodSpec.constructorBuilder()
-                    .addParameter(pipelineTypeName, "pipeline")
+                    .addParameter(desc.pipelineTypeName, "pipeline")
                     .addStatement("super(pipeline)")
                     .build()
             )
@@ -143,7 +128,7 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
                 MethodSpec.methodBuilder("handler")
                     .addAnnotation(Override::class.java)
                     .addModifiers(PROTECTED)
-                    .returns(handlerTypeName)
+                    .returns(desc.handlerTypeName)
                     .addStatement("return null")
                     .build()
             )
@@ -159,10 +144,10 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val tailContextClass = TypeSpec.classBuilder("TailContext")
             .addModifiers(PRIVATE, STATIC)
-            .superclass(abstractHandlerContextTypeName)
+            .superclass(desc.abstractHandlerContextTypeName)
             .addMethod(
                 MethodSpec.constructorBuilder()
-                    .addParameter(pipelineTypeName, "pipeline")
+                    .addParameter(desc.pipelineTypeName, "pipeline")
                     .addStatement("super(pipeline)")
                     .build()
             )
@@ -170,7 +155,7 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
                 MethodSpec.methodBuilder("handler")
                     .addAnnotation(Override::class.java)
                     .addModifiers(PROTECTED)
-                    .returns(handlerTypeName)
+                    .returns(desc.handlerTypeName)
                     .addStatement("return null")
                     .build()
             )
@@ -192,14 +177,14 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
         pipelineClassBuilder.addType(tailContextClass)
 
 
-        JavaFile.builder(newPackageName, pipelineClassBuilder.build())
+        JavaFile.builder(desc.pipelineTypeName.packageName(), pipelineClassBuilder.build())
             .skipJavaLangImports(true)
             .build()
             .writeTo(filer)
     }
 
     private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
-        descriptor.operations.map {
+        desc.entityOperations.map {
             MethodSpec.methodBuilder(it.methodName)
                 .addModifiers(PUBLIC)
                 .addAnnotation(Override::class.java)
@@ -210,45 +195,45 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
         }
 
     fun genHandlerContextInterface() {
-        val contextInterface = TypeSpec.interfaceBuilder(handlerContextName)
+        val contextInterface = TypeSpec.interfaceBuilder(desc.handlerContextTypeName)
             .addModifiers(PUBLIC)
-            .addSuperinterface(descriptor.typeMirror)
+            .addSuperinterface(desc.entityType)
             .addMethod(
                 MethodSpec.methodBuilder("pipeline")
                     .addModifiers(PUBLIC, ABSTRACT)
-                    .returns(ClassName.get(newPackageName, pipelineName))
+                    .returns(desc.pipelineTypeName)
                     .build()
             )
             .build()
 
-        JavaFile.builder(newPackageName, contextInterface)
+        JavaFile.builder(desc.handlerContextTypeName.packageName(), contextInterface)
             .skipJavaLangImports(true)
             .build()
             .writeTo(filer)
     }
 
     fun genAbstractHandlerContextClass() {
-        val abstractContextClassBuilder = TypeSpec.classBuilder(abstractHandlerContextName)
+        val abstractContextClassBuilder = TypeSpec.classBuilder(desc.abstractHandlerContextTypeName)
             .addModifiers(PUBLIC, ABSTRACT)
-            .addSuperinterface(ClassName.get(newPackageName, handlerContextName))
+            .addSuperinterface(desc.handlerContextTypeName)
 
         val pipelineField =
-            FieldSpec.builder(ClassName.get(newPackageName, pipelineName), "pipeline", PRIVATE, FINAL).build()
+            FieldSpec.builder(desc.pipelineTypeName, "pipeline", PRIVATE, FINAL).build()
         abstractContextClassBuilder.addField(pipelineField)
 
         val prevContextField =
-            FieldSpec.builder(abstractHandlerContextTypeName, "prev", VOLATILE)
+            FieldSpec.builder(desc.abstractHandlerContextTypeName, "prev", VOLATILE)
                 .build()
         abstractContextClassBuilder.addField(prevContextField)
 
         val nextContextField =
-            FieldSpec.builder(abstractHandlerContextTypeName, "next", VOLATILE)
+            FieldSpec.builder(desc.abstractHandlerContextTypeName, "next", VOLATILE)
                 .build()
         abstractContextClassBuilder.addField(nextContextField)
 
         val constructor = MethodSpec.constructorBuilder()
             .addModifiers(PUBLIC)
-            .addParameter(ParameterSpec.builder(ClassName.get(newPackageName, pipelineName), "pipeline").build())
+            .addParameter(ParameterSpec.builder(desc.pipelineTypeName, "pipeline").build())
             .addCode(
                 """
                 this.pipeline = pipeline;
@@ -267,35 +252,34 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
         val handlerMethod = MethodSpec.methodBuilder("handler")
             .addModifiers(PROTECTED, ABSTRACT)
-            .returns(handlerTypeName)
+            .returns(desc.handlerTypeName)
             .build()
         abstractContextClassBuilder.addMethod(handlerMethod)
 
         val pipelineMethod = MethodSpec.methodBuilder("pipeline")
             .addAnnotation(Override::class.java)
             .addModifiers(PUBLIC)
-            .returns(pipelineTypeName)
+            .returns(desc.pipelineTypeName)
             .addCode("return pipeline;")
             .build()
         abstractContextClassBuilder.addMethod(pipelineMethod)
 
-
-        JavaFile.builder(newPackageName, abstractContextClassBuilder.build())
+        JavaFile.builder(desc.abstractHandlerContextTypeName.packageName(), abstractContextClassBuilder.build())
             .skipJavaLangImports(true)
             .build()
             .writeTo(filer)
     }
 
     fun genDefaultHandlerContextClass() {
-        val defaultContextClassBuilder = TypeSpec.classBuilder(defaultHandlerContextName)
+        val defaultContextClassBuilder = TypeSpec.classBuilder(desc.defaultHandlerContextTypeName)
             .addModifiers(PUBLIC)
-            .superclass(abstractHandlerContextTypeName)
-            .addField(handlerTypeName, "handler", PRIVATE, FINAL)
+            .superclass(desc.abstractHandlerContextTypeName)
+            .addField(desc.handlerTypeName, "handler", PRIVATE, FINAL)
 
         val constructor = MethodSpec.constructorBuilder()
             .addModifiers(PUBLIC)
-            .addParameter(pipelineTypeName, "pipeline")
-            .addParameter(handlerTypeName, "handler")
+            .addParameter(desc.pipelineTypeName, "pipeline")
+            .addParameter(desc.handlerTypeName, "handler")
             .addStatement("super(pipeline)")
             .addStatement("this.handler = handler")
             .build()
@@ -304,12 +288,12 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
         val handlerMethod = MethodSpec.methodBuilder("handler")
             .addAnnotation(Override::class.java)
             .addModifiers(PROTECTED)
-            .returns(handlerTypeName)
+            .returns(desc.handlerTypeName)
             .addStatement("return handler")
             .build()
         defaultContextClassBuilder.addMethod(handlerMethod)
 
-        JavaFile.builder(newPackageName, defaultContextClassBuilder.build())
+        JavaFile.builder(desc.defaultHandlerContextTypeName.packageName(), defaultContextClassBuilder.build())
             .skipJavaLangImports(true)
             .build()
             .writeTo(filer)
@@ -317,14 +301,13 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
 
 
     fun genHandlerInterface() {
-        val handlerTypeBuilder = TypeSpec.interfaceBuilder(handlerName).addModifiers(PUBLIC)
+        val handlerTypeBuilder = TypeSpec.interfaceBuilder(desc.handlerTypeName).addModifiers(PUBLIC)
 
         val contextParam = ParameterSpec.builder(
-            ClassName.get(newPackageName, handlerContextName),
-            StringUtils.uncapitalize(handlerContextName)
+            desc.handlerContextTypeName, StringUtils.uncapitalize(desc.handlerContextTypeName.simpleName())
         ).build()
 
-        descriptor.operations.forEach {
+        desc.entityOperations.forEach {
             val operationMethod = MethodSpec.methodBuilder(it.methodName)
                 .addModifiers(ABSTRACT, PUBLIC)
                 .addParameters(it.params.map { param -> ParameterSpec.get(param) })
@@ -335,7 +318,7 @@ class SourceGenerator(private val descriptor: AutoPipelineClassDescriptor, priva
             handlerTypeBuilder.addMethod(operationMethod)
         }
 
-        JavaFile.builder(newPackageName, handlerTypeBuilder.build())
+        JavaFile.builder(desc.handlerTypeName.packageName(), handlerTypeBuilder.build())
             .skipJavaLangImports(true)
             .build()
             .writeTo(filer)

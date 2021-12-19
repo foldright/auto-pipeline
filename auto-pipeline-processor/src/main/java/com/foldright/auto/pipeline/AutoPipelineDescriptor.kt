@@ -1,5 +1,9 @@
 package com.foldright.auto.pipeline
 
+import com.squareup.javapoet.ClassName
+import com.squareup.javapoet.ParameterizedTypeName
+import com.squareup.javapoet.TypeName
+import com.squareup.javapoet.TypeVariableName
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier.ABSTRACT
 import javax.lang.model.element.Modifier.PUBLIC
@@ -10,14 +14,51 @@ import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
 
 class AutoPipelineClassDescriptor(
-    private val elements: Elements,
+    elements: Elements,
     private val types: Types,
-    private val element: TypeElement
+    element: TypeElement
 ) {
-    val typeMirror: TypeMirror = element.asType()
-    val packageName = elements.getPackageOf(element).toString()
-    val simpleName = element.simpleName.toString()
-    val operations = elements.getAllMembers(element)
+    // entity description
+    private val entityPackage = elements.getPackageOf(element).toString()
+    private val entitySimpleName = element.simpleName.toString()
+    val entityType: TypeName = TypeName.get(element.asType())
+    val entityTypeVariables = element.typeParameters.map { TypeVariableName.get(it) }
+    val entityTypeWithTypeParameters: ParameterizedTypeName =
+        ParameterizedTypeName.get(ClassName.get(element), *entityTypeVariables.toTypedArray())
+
+
+    // new package for all pipeline source code
+    private val newPackageName = "${entityPackage}.pipeline"
+
+    val listTypeName: ClassName = ClassName.get("java.util", "List")
+
+
+    // pipeline description
+    private val pipelineSimpleName = "${entitySimpleName}Pipeline"
+    val pipelineTypeName: ClassName = ClassName.get(newPackageName, pipelineSimpleName)
+
+
+    // handlerContext description
+    private val handlerContextName = "${entitySimpleName}HandlerContext"
+    val handlerContextTypeName: ClassName = ClassName.get(newPackageName, handlerContextName)
+
+
+    // abstractHandlerContext description
+    private val abstractHandlerContextName = "Abstract${handlerContextName}"
+    val abstractHandlerContextTypeName: ClassName = ClassName.get(newPackageName, abstractHandlerContextName)
+
+
+    // defaultHandlerContext
+    private val defaultHandlerContextName = "Default${handlerContextName}"
+    val defaultHandlerContextTypeName: ClassName = ClassName.get(newPackageName, defaultHandlerContextName)
+
+
+    // handler
+    private val handlerName = "${entitySimpleName}Handler"
+    val handlerTypeName: ClassName = ClassName.get(newPackageName, handlerName)
+
+
+    val entityOperations = elements.getAllMembers(element)
         .filterNotNull()
         .filterIsInstance(ExecutableElement::class.java)
         .filter {
@@ -26,7 +67,7 @@ class AutoPipelineClassDescriptor(
         .map { AutoPipelineOperatorsDescriptor(it) }
 }
 
-class AutoPipelineOperatorsDescriptor(private val executableElement: ExecutableElement) {
+class AutoPipelineOperatorsDescriptor(executableElement: ExecutableElement) {
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
     val params: MutableList<out VariableElement> = executableElement.parameters

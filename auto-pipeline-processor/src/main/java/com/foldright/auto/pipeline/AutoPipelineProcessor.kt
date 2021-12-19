@@ -1,6 +1,5 @@
 package com.foldright.auto.pipeline
 
-import com.google.common.collect.Sets
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
@@ -64,7 +63,7 @@ class AutoPipelineProcessor : AbstractProcessor() {
     }
 
     override fun getSupportedAnnotationTypes(): Set<String> {
-        return Sets.newHashSet(AutoPipeline::class.java.canonicalName)
+        return setOf(AutoPipeline::class.java.canonicalName)
     }
 
     override fun getSupportedSourceVersion(): SourceVersion {
