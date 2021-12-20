@@ -66,7 +66,7 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
     }
 
     private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
-        desc.entityOperations.map {
+        desc.entityMethods.map {
             MethodSpec.methodBuilder(it.methodName)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override::class.java)

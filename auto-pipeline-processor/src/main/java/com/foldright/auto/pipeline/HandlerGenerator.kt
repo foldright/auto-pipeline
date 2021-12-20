@@ -16,7 +16,7 @@ class HandlerGenerator (private val desc: AutoPipelineClassDescriptor, private v
             desc.handlerContextTypeName, StringUtils.uncapitalize(desc.handlerContextRawClassName.simpleName())
         ).build()
 
-        desc.entityOperations.forEach {
+        desc.entityMethods.forEach {
             val operationMethod = MethodSpec.methodBuilder(it.methodName)
                 .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
                 .addParameters(it.params.map { param -> ParameterSpec.get(param) })

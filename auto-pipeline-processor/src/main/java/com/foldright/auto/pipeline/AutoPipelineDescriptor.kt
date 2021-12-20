@@ -4,6 +4,7 @@ import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.TypeVariableName
+import javax.lang.model.element.ElementKind
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier.ABSTRACT
 import javax.lang.model.element.Modifier.PUBLIC
@@ -97,16 +98,16 @@ class AutoPipelineClassDescriptor(
     }
 
 
-    val entityOperations = elements.getAllMembers(entityElement)
+    val entityMethods = elements.getAllMembers(entityElement)
         .filterNotNull()
         .filterIsInstance(ExecutableElement::class.java)
         .filter {
-            it.modifiers.contains(PUBLIC) && it.modifiers.contains(ABSTRACT)
+            it.kind == ElementKind.METHOD && it.modifiers.contains(PUBLIC) && it.modifiers.contains(ABSTRACT)
         }
         .map { AutoPipelineOperatorsDescriptor(it) }
 }
 
-class AutoPipelineOperatorsDescriptor(executableElement: ExecutableElement) {
+class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement) {
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
     val params: MutableList<out VariableElement> = executableElement.parameters

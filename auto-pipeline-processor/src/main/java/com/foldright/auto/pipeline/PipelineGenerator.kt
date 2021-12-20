@@ -3,6 +3,8 @@ package com.foldright.auto.pipeline
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
+import javax.lang.model.element.VariableElement
+import javax.lang.model.type.TypeMirror
 
 class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
 
@@ -30,8 +32,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
         pipelineClassBuilder.addMethod(pipelineConstructor)
         pipelineClassBuilder.addMethods(genPipelineOverrideMethods {
             when (TypeName.get(it.returnType)) {
-                TypeName.VOID -> """head.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"""
-                else -> """return head.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"""
+                TypeName.VOID -> "head.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
+                else -> "return head.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
             }
         })
 
@@ -133,8 +135,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             )
             .addMethods(genPipelineOverrideMethods {
                 when (TypeName.get(it.returnType)) {
-                    TypeName.VOID -> """next.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"""
-                    else -> """return next.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"""
+                    TypeName.VOID -> "next.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
+                    else -> "return next.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
                 }
             })
             .build()
@@ -165,11 +167,11 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                     !typeName.isPrimitive -> "return null;"
                     else -> when (typeName) {
                         // TODO： 生成默认值可能不是好的做法，因为这假设了用户期望 tail 的行为
-                        TypeName.VOID -> ""
+                        TypeName.VOID -> "//noop"
                         TypeName.BOOLEAN -> "return false;"
                         TypeName.BYTE, TypeName.SHORT, TypeName.INT, TypeName.LONG, TypeName.FLOAT, TypeName.DOUBLE -> "return 0;"
                         TypeName.CHAR -> "return '0';"
-                        else -> ""
+                        else -> "//no-op"
                     }
                 }
             })
@@ -184,12 +186,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
     }
 
     private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
-        desc.entityOperations.map {
-            MethodSpec.methodBuilder(it.methodName)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Override::class.java)
-                .addParameters(it.params.map { param -> ParameterSpec.get(param) })
-                .returns(TypeName.get(it.returnType))
+        desc.entityMethods.map {
+            MethodSpec.overriding(it.executableElement)
                 .addCode(statement.invoke(it))
                 .build()
         }
