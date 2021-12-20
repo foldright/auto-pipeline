@@ -7,7 +7,8 @@ import com.squareup.javapoet.TypeSpec
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
-class DefaultHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
+class DefaultHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
+    AbstractGenerator(desc, filer) {
 
     fun gen() {
         val defaultContextClassBuilder = TypeSpec.classBuilder(desc.defaultHandlerContextRawClassName)

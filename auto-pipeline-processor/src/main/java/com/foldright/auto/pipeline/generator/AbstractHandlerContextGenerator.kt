@@ -6,7 +6,8 @@ import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
-class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
+class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
+    AbstractGenerator(desc, filer) {
 
     fun gen() {
         val abstractContextClassBuilder = TypeSpec.classBuilder(desc.abstractHandlerContextRawClassName)
@@ -66,15 +67,4 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
             .build()
             .writeTo(filer)
     }
-
-    private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
-        desc.entityMethods.map {
-            MethodSpec.methodBuilder(it.methodName)
-                .addModifiers(Modifier.PUBLIC)
-                .addAnnotation(Override::class.java)
-                .addParameters(it.params.map { param -> ParameterSpec.get(param) })
-                .returns(TypeName.get(it.returnType))
-                .addCode(statement.invoke(it))
-                .build()
-        }
 }

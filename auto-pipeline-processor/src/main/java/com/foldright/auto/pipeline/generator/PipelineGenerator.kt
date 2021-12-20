@@ -1,12 +1,12 @@
 package com.foldright.auto.pipeline.generator
 
 import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
-import com.foldright.auto.pipeline.AutoPipelineOperatorsDescriptor
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
-class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
+class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
+    AbstractGenerator(desc, filer) {
 
     fun gen() {
         val pipelineClassBuilder = TypeSpec.classBuilder(desc.pipelineRawClassName)
@@ -184,11 +184,4 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             .build()
             .writeTo(filer)
     }
-
-    private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
-        desc.entityMethods.map {
-            MethodSpec.overriding(it.executableElement)
-                .addCode(statement.invoke(it))
-                .build()
-        }
 }

@@ -1,12 +1,15 @@
 package com.foldright.auto.pipeline.generator
 
 import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
-import com.squareup.javapoet.*
+import com.squareup.javapoet.JavaFile
+import com.squareup.javapoet.ParameterSpec
+import com.squareup.javapoet.TypeSpec
 import org.apache.commons.lang3.StringUtils
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
-class HandlerGenerator (private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
+class HandlerGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
+    AbstractGenerator(desc, filer) {
 
     fun gen() {
         val handlerTypeBuilder = TypeSpec.interfaceBuilder(desc.handlerRawClassName)
@@ -18,12 +21,16 @@ class HandlerGenerator (private val desc: AutoPipelineClassDescriptor, private v
         ).build()
 
         desc.entityMethods.forEach {
-            val operationMethod = MethodSpec.methodBuilder(it.methodName)
-                .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
-                .addParameters(it.params.map { param -> ParameterSpec.get(param) })
+            val operationMethod = createMethodSpecBuilder(it.executableElement)
                 .addParameter(contextParam)
-                .returns(TypeName.get(it.returnType))
                 .build()
+
+//            val operationMethod = MethodSpec.methodBuilder(it.methodName)
+//                .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
+//                .addParameters(it.params.map { param -> ParameterSpec.get(param) })
+//                .addParameter(contextParam)
+//                .returns(TypeName.get(it.returnType))
+//                .build()
 
             handlerTypeBuilder.addMethod(operationMethod)
         }
