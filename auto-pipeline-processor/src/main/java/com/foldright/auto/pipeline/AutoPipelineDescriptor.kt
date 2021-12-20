@@ -16,15 +16,19 @@ import javax.lang.model.util.Types
 class AutoPipelineClassDescriptor(
     elements: Elements,
     private val types: Types,
-    val entityElement: TypeElement
+    private val entityElement: TypeElement
 ) {
     // entity description
     private val entityPackage = elements.getPackageOf(entityElement).toString()
     private val entitySimpleName = entityElement.simpleName.toString()
     val entityType: TypeName = TypeName.get(entityElement.asType())
-    val entityTypeVariables = entityElement.typeParameters.map { TypeVariableName.get(it) }
-    val entityTypeWithTypeParameters: ParameterizedTypeName =
-        ParameterizedTypeName.get(ClassName.get(entityElement), *entityTypeVariables.toTypedArray())
+    val entityDeclaredTypeVariables: List<TypeVariableName> by lazy {
+        if (entityType is ParameterizedTypeName) {
+            entityElement.typeParameters.map { TypeVariableName.get(it) }
+        } else {
+            listOf()
+        }
+    }
 
 
     // new package for all pipeline source code
@@ -35,27 +39,62 @@ class AutoPipelineClassDescriptor(
 
     // pipeline description
     private val pipelineSimpleName = "${entitySimpleName}Pipeline"
-    val pipelineTypeName: ClassName = ClassName.get(newPackageName, pipelineSimpleName)
+    val pipelineRawClassName: ClassName = ClassName.get(newPackageName, pipelineSimpleName)
+    val pipelineTypeName: TypeName by lazy {
+        if (entityDeclaredTypeVariables.isEmpty()) {
+            pipelineRawClassName
+        } else {
+            ParameterizedTypeName.get(pipelineRawClassName, *entityDeclaredTypeVariables.toTypedArray())
+        }
+    }
 
 
     // handlerContext description
     private val handlerContextName = "${entitySimpleName}HandlerContext"
-    val handlerContextTypeName: ClassName = ClassName.get(newPackageName, handlerContextName)
+    val handlerContextRawClassName: ClassName = ClassName.get(newPackageName, handlerContextName)
+    val handlerContextTypeName: TypeName by lazy {
+        if (entityDeclaredTypeVariables.isEmpty()) {
+            handlerContextRawClassName
+        } else {
+            ParameterizedTypeName.get(handlerContextRawClassName, *entityDeclaredTypeVariables.toTypedArray())
+        }
+    }
 
 
     // abstractHandlerContext description
     private val abstractHandlerContextName = "Abstract${handlerContextName}"
-    val abstractHandlerContextTypeName: ClassName = ClassName.get(newPackageName, abstractHandlerContextName)
+    val abstractHandlerContextRawClassName: ClassName = ClassName.get(newPackageName, abstractHandlerContextName)
+    val abstractHandlerContextTypeName: TypeName by lazy {
+        if (entityDeclaredTypeVariables.isEmpty()) {
+            abstractHandlerContextRawClassName
+        } else {
+            ParameterizedTypeName.get(abstractHandlerContextRawClassName, *entityDeclaredTypeVariables.toTypedArray())
+        }
+    }
 
 
     // defaultHandlerContext
     private val defaultHandlerContextName = "Default${handlerContextName}"
-    val defaultHandlerContextTypeName: ClassName = ClassName.get(newPackageName, defaultHandlerContextName)
+    val defaultHandlerContextRawClassName: ClassName = ClassName.get(newPackageName, defaultHandlerContextName)
+    val defaultHandlerContextTypeName: TypeName by lazy {
+        if (entityDeclaredTypeVariables.isEmpty()) {
+            defaultHandlerContextRawClassName
+        } else {
+            ParameterizedTypeName.get(defaultHandlerContextRawClassName, *entityDeclaredTypeVariables.toTypedArray())
+        }
+    }
 
 
     // handler
     private val handlerName = "${entitySimpleName}Handler"
-    val handlerTypeName: ClassName = ClassName.get(newPackageName, handlerName)
+    val handlerRawClassName: ClassName = ClassName.get(newPackageName, handlerName)
+    val handlerTypeName: TypeName by lazy {
+        if (entityDeclaredTypeVariables.isEmpty()) {
+            handlerRawClassName
+        } else {
+            ParameterizedTypeName.get(handlerRawClassName, *entityDeclaredTypeVariables.toTypedArray())
+        }
+    }
 
 
     val entityOperations = elements.getAllMembers(entityElement)

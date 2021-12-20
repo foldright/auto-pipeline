@@ -7,14 +7,12 @@ import javax.lang.model.element.Modifier
 class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
 
     fun gen() {
-        val pipelineClassBuilder = TypeSpec.classBuilder(desc.pipelineTypeName)
+        val pipelineClassBuilder = TypeSpec.classBuilder(desc.pipelineRawClassName)
             .addModifiers(Modifier.PUBLIC)
+            .addTypeVariables(desc.entityDeclaredTypeVariables)
             .addSuperinterface(desc.entityType)
             .addField(desc.abstractHandlerContextTypeName, "head", Modifier.PRIVATE, Modifier.FINAL)
             .addField(desc.abstractHandlerContextTypeName, "tail", Modifier.PRIVATE, Modifier.FINAL)
-
-        addTypeVariable(pipelineClassBuilder)
-
 
         val pipelineConstructor = MethodSpec.constructorBuilder()
             .addModifiers(Modifier.PUBLIC)
@@ -43,15 +41,15 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             .returns(desc.pipelineTypeName)
             .addCode(
                 """
-                ${desc.abstractHandlerContextTypeName.simpleName()} newCtx = new ${desc.defaultHandlerContextTypeName.simpleName()}(this, handler);
-                ${desc.abstractHandlerContextTypeName.simpleName()} nextCtx = head.next;
+                ${'$'}T newCtx = new ${desc.defaultHandlerContextRawClassName.simpleName()}(this, handler);
+                ${'$'}T nextCtx = head.next;
                 head.next = newCtx;
                 newCtx.prev = head;
                 newCtx.next = nextCtx;
                 nextCtx.prev = newCtx;
                 
                 return this;
-            """.trimIndent()
+            """.trimIndent(), desc.abstractHandlerContextTypeName, desc.abstractHandlerContextTypeName
             ).build()
         pipelineClassBuilder.addMethod(addFirstMethod)
 
@@ -82,8 +80,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             .returns(desc.pipelineTypeName)
             .addCode(
                 """
-                ${desc.abstractHandlerContextTypeName.simpleName()} newCtx = new ${desc.defaultHandlerContextTypeName.simpleName()}(this, handler);
-                ${desc.abstractHandlerContextTypeName.simpleName()} prevCtx = tail.prev;
+                ${'$'}T newCtx = new ${desc.defaultHandlerContextRawClassName.simpleName()}(this, handler);
+                ${'$'}T prevCtx = tail.prev;
                 
                 newCtx.prev = prevCtx;
                 newCtx.next = tail;
@@ -91,7 +89,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 tail.prev = newCtx;
                 
                 return this;
-            """.trimIndent()
+            """.trimIndent(), desc.abstractHandlerContextTypeName, desc.abstractHandlerContextTypeName
             ).build()
         pipelineClassBuilder.addMethod(addLastMethod)
 
@@ -105,18 +103,19 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                     return this;
                 }
                 
-                for (ConfigSourceHandler handler : handlers) {
+                for (${'$'}T handler : handlers) {
                     addLast(handler);
                 }
                 
                 return this;
-            """.trimIndent()
+            """.trimIndent(), desc.handlerTypeName
             ).build()
         pipelineClassBuilder.addMethod(addLastListMethod)
 
 
         val headContextClass = TypeSpec.classBuilder("HeadContext")
             .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+            .addTypeVariables(desc.entityDeclaredTypeVariables)
             .superclass(desc.abstractHandlerContextTypeName)
             .addMethod(
                 MethodSpec.constructorBuilder()
@@ -144,6 +143,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
 
         val tailContextClass = TypeSpec.classBuilder("TailContext")
             .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+            .addTypeVariables(desc.entityDeclaredTypeVariables)
             .superclass(desc.abstractHandlerContextTypeName)
             .addMethod(
                 MethodSpec.constructorBuilder()
@@ -177,17 +177,10 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
         pipelineClassBuilder.addType(tailContextClass)
 
 
-        JavaFile.builder(desc.pipelineTypeName.packageName(), pipelineClassBuilder.build())
+        JavaFile.builder(desc.pipelineRawClassName.packageName(), pipelineClassBuilder.build())
             .skipJavaLangImports(true)
             .build()
             .writeTo(filer)
-    }
-
-    private fun addTypeVariable(pipelineClassBuilder: TypeSpec.Builder) {
-        if (desc.entityType is ParameterizedTypeName) {
-            val typeArguments = desc.entityElement.typeParameters.map { TypeVariableName.get(it) }
-            pipelineClassBuilder.addTypeVariables(typeArguments)
-        }
     }
 
     private fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
