@@ -1,10 +1,10 @@
-package com.foldright.auto.pipeline
+package com.foldright.auto.pipeline.generator
 
+import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
+import com.foldright.auto.pipeline.AutoPipelineOperatorsDescriptor
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
-import javax.lang.model.element.VariableElement
-import javax.lang.model.type.TypeMirror
 
 class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
 

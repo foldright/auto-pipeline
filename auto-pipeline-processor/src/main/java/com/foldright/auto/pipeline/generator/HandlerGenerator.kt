@@ -1,5 +1,6 @@
-package com.foldright.auto.pipeline
+package com.foldright.auto.pipeline.generator
 
+import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
 import com.squareup.javapoet.*
 import org.apache.commons.lang3.StringUtils
 import javax.annotation.processing.Filer

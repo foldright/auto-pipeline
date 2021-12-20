@@ -1,5 +1,6 @@
-package com.foldright.auto.pipeline
+package com.foldright.auto.pipeline.generator
 
+import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
 import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
