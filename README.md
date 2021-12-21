@@ -7,7 +7,7 @@ auto-pipeline is a annotation-processor for Pipeline generator, which is inspire
 
 
 ## a quick example
-please check the [example project](https://github.com/zavakid/auto-pipeline/tree/main/auto-pipeline-example) and it's test case.
+please check the [example project](https://github.com/foldright/auto-pipeline/tree/main/auto-pipeline-example) and it's test case.
 
 WIP...
 
