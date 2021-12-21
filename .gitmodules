@@ -1,0 +1,3 @@
+[submodule "scripts/ci"]
+	path = scripts/ci
+	url = https://github.com/foldright/java-ci-scripts.git
