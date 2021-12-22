@@ -1,13 +1,22 @@
 package com.foldright.example.config.pipeline
 
+import com.foldright.example.config.ConfigSource
 import com.foldright.example.config.handler.MapConfigSourceHandler
 import com.foldright.example.config.handler.PlaceholderConfigSourceHandler
 import com.foldright.example.config.handler.SystemConfigSourceHandler
 import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.shouldBe
 
-class ConfigSourceTest : AnnotationSpec() {
+private const val NOT_EXISTED = "not_existed_key"
 
+class ConfigSourceTest : AnnotationSpec() {
+    lateinit var pipeline: ConfigSource
+
+    @AfterEach
+    fun afterEach() {
+        pipeline.get(NOT_EXISTED).shouldBeNull()
+    }
 
     @Test
     fun testMap() {
@@ -15,13 +24,12 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = ConfigSourcePipeline()
+        pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
 
-        val aValue = pipeline.get("a")
-        aValue shouldBe "1"
+        pipeline.get("a") shouldBe "1"
     }
 
     @Test
@@ -30,13 +38,12 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = ConfigSourcePipeline()
+        pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
 
-        val aValue = pipeline.get("java.home")
-        aValue shouldBe System.getProperty("java.home")
+        pipeline.get("java.home") shouldBe System.getProperty("java.home")
     }
 
     @Test
@@ -45,28 +52,27 @@ class ConfigSourceTest : AnnotationSpec() {
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2\${a}"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = ConfigSourcePipeline()
+        pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
 
-        val aValue = pipeline.get("b")
-        aValue shouldBe "21"
+        pipeline.get("b") shouldBe "21"
+        pipeline.get("a") shouldBe "1"
     }
 
     @Test
-    fun testPlaceholder_2() {
+    fun testPlaceholder_2_jumps() {
         val placeholderConfigSource = PlaceholderConfigSourceHandler()
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2\${a}", "c" to "3\${b}"))
         val propConfigSource = SystemConfigSourceHandler()
 
-        val pipeline = ConfigSourcePipeline()
+        pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
             .addLast(propConfigSource)
 
-        val aValue = pipeline.get("c")
-        aValue shouldBe "321"
+        pipeline.get("c") shouldBe "321"
     }
 
     @Test
