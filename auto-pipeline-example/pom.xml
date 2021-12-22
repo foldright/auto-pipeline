@@ -13,14 +13,13 @@
 
 	<dependencies>
 		<dependency>
+			<!--
+				annotation processor dependency should be "provided" scope!
+			-->
 			<groupId>com.foldright.auto-pipeline</groupId>
 			<artifactId>auto-pipeline-processor</artifactId>
 			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jetbrains.kotlin</groupId>
-			<artifactId>kotlin-stdlib-jdk8</artifactId>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
