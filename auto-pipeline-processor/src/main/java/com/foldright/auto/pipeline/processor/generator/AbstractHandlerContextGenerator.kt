@@ -55,7 +55,7 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
 
         val pipelineMethod = MethodSpec.methodBuilder("pipeline")
             .addAnnotation(Override::class.java)
-            .addModifiers(Modifier.PUBLIC)
+            .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .returns(desc.pipelineTypeName)
             .addCode("return pipeline;")
             .build()
