@@ -1,6 +1,6 @@
-package com.foldright.auto.pipeline
+package com.foldright.auto.pipeline.processor
 
-import com.foldright.auto.pipeline.generator.*
+import com.foldright.auto.pipeline.processor.generator.*
 import javax.annotation.processing.Filer
 
 class SourceGeneratorFacade(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {

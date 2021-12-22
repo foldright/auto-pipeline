@@ -1,6 +1,6 @@
-package com.foldright.auto.pipeline.generator
+package com.foldright.auto.pipeline.processor.generator
 
-import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
@@ -22,7 +22,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 """
                 head = new HeadContext(this);
                 tail = new TailContext(this);
-                
+
                 head.prev = null;
                 head.next = tail;
                 tail.prev = head;
@@ -49,7 +49,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 newCtx.prev = head;
                 newCtx.next = nextCtx;
                 nextCtx.prev = newCtx;
-                
+
                 return this;
             """.trimIndent(), desc.abstractHandlerContextTypeName, desc.abstractHandlerContextTypeName
             ).build()
@@ -70,7 +70,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 for (int i = 0; i < size; i++) {
                     addFirst(handlers.get(size - i - 1));
                 }
-        
+
                 return this;
             """.trimIndent()
             ).build()
@@ -84,12 +84,12 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 """
                 ${'$'}T newCtx = new ${desc.defaultHandlerContextRawClassName.simpleName()}(this, handler);
                 ${'$'}T prevCtx = tail.prev;
-                
+
                 newCtx.prev = prevCtx;
                 newCtx.next = tail;
                 prevCtx.next = newCtx;
                 tail.prev = newCtx;
-                
+
                 return this;
             """.trimIndent(), desc.abstractHandlerContextTypeName, desc.abstractHandlerContextTypeName
             ).build()
@@ -104,11 +104,11 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 if (handlers == null || handlers.isEmpty()) {
                     return this;
                 }
-                
+
                 for (${'$'}T handler : handlers) {
                     addLast(handler);
                 }
-                
+
                 return this;
             """.trimIndent(), desc.handlerTypeName
             ).build()
@@ -166,7 +166,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 when {
                     !typeName.isPrimitive -> "return null;"
                     else -> when (typeName) {
-                        // TODO： 生成默认值可能不是好的做法，因为这假设了用户期望 tail 的行为
+                        // TODO: Generating the default value is not good,
+                        //       since there is a assumption that user want the "tail" behavior.
                         TypeName.VOID -> "//noop"
                         TypeName.BOOLEAN -> "return false;"
                         TypeName.BYTE, TypeName.SHORT, TypeName.INT, TypeName.LONG, TypeName.FLOAT, TypeName.DOUBLE -> "return 0;"

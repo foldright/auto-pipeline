@@ -1,5 +1,6 @@
-package com.foldright.auto.pipeline
+package com.foldright.auto.pipeline.processor
 
+import com.foldright.auto.pipeline.AutoPipeline
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.Element
@@ -28,20 +29,19 @@ class AutoPipelineProcessor : AbstractProcessor() {
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
         val elements = roundEnv.getElementsAnnotatedWith(AutoPipeline::class.java)
         if (elements.isEmpty()) {
-            return false;
+            return false
         }
 
         for (element in elements) {
             if (element.kind != ElementKind.INTERFACE) {
-                error(element, "Only interface can annotated with @${AutoPipeline::class.java.simpleName}")
+                error(element, "Only interface can annotated with @${AutoPipeline::class.simpleName}")
                 return false
             }
 
             if (!element.modifiers.contains(Modifier.PUBLIC)) {
-                error(element, "Only interface can annotated with @${AutoPipeline::class.java.simpleName}")
+                error(element, "Only interface can annotated with @${AutoPipeline::class.simpleName}")
                 return false
             }
-
 
             if (element is TypeElement) {
                 doProcess(element)
@@ -59,7 +59,7 @@ class AutoPipelineProcessor : AbstractProcessor() {
     }
 
     override fun getSupportedAnnotationTypes(): Set<String> {
-        return setOf(AutoPipeline::class.java.canonicalName)
+        return setOf(AutoPipeline::class.qualifiedName!!)
     }
 
     override fun getSupportedSourceVersion(): SourceVersion {

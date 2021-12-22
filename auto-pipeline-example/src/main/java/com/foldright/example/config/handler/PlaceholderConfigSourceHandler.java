@@ -11,7 +11,9 @@ import static org.apache.commons.lang3.StringUtils.removeEnd;
 import static org.apache.commons.lang3.StringUtils.removeStart;
 
 /**
- * 支持 value 为 ${value} 形式的 placeholder，暂时不支持如 ${${value}} 的嵌套
+ * Support value with placeholder with format {@code ${value}}.
+ * <p>
+ * Not support nested placeholder yet, e.g. {@code ${${value}}}.
  */
 public class PlaceholderConfigSourceHandler implements ConfigSourceHandler {
 

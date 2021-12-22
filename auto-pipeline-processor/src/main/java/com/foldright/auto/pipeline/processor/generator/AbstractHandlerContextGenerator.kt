@@ -1,7 +1,6 @@
-package com.foldright.auto.pipeline.generator
+package com.foldright.auto.pipeline.processor.generator
 
-import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
-import com.foldright.auto.pipeline.AutoPipelineOperatorsDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier

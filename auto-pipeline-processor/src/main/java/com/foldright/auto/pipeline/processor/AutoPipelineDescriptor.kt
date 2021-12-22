@@ -1,4 +1,4 @@
-package com.foldright.auto.pipeline
+package com.foldright.auto.pipeline.processor
 
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.ParameterizedTypeName

@@ -1,7 +1,7 @@
-package com.foldright.auto.pipeline.generator
+package com.foldright.auto.pipeline.processor.generator
 
-import com.foldright.auto.pipeline.AutoPipelineClassDescriptor
-import com.foldright.auto.pipeline.AutoPipelineOperatorsDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.TypeName

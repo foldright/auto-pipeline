@@ -1,5 +1,6 @@
 package com.foldright.auto.pipeline
 
+import com.foldright.auto.pipeline.processor.AutoPipelineProcessor
 import com.google.testing.compile.Compiler
 import com.google.testing.compile.JavaFileObjects
 import io.kotest.core.spec.style.AnnotationSpec
