@@ -48,8 +48,8 @@
 
 		<!-- testing dependencies versions -->
 		<junit5.version>5.8.2</junit5.version>
-		<assertj.version>3.21.0</assertj.version>
 		<kotest.version>5.0.3</kotest.version>
+		<assertj.version>3.21.0</assertj.version>
 	</properties>
 
 	<distributionManagement>
@@ -84,6 +84,7 @@
 			<scope>provided</scope>
 			<optional>true</optional>
 		</dependency>
+		<!-- testing libs -->
 		<dependency>
 			<groupId>io.kotest</groupId>
 			<artifactId>kotest-runner-junit5-jvm</artifactId>
@@ -116,13 +117,6 @@
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-bom</artifactId>
-				<version>${log4j2.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
 				<version>${junit5.version}</version>
@@ -143,6 +137,69 @@
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-bom</artifactId>
+				<version>${log4j2.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<!-- common libs -->
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava</artifactId>
+				<version>31.0.1-jre</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>3.12.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-text</artifactId>
+				<version>1.9</version>
+			</dependency>
+
+			<!--
+				source processing/compiler/template libs
+			-->
+			<dependency>
+				<groupId>com.squareup</groupId>
+				<artifactId>javapoet</artifactId>
+				<version>1.13.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.31</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.jbock-java</groupId>
+				<artifactId>compile-testing</artifactId>
+				<version>0.19.10</version>
+				<scope>test</scope>
+			</dependency>
+
+			<!--
+				inject and config libs
+			-->
+			<dependency>
+				<groupId>javax.inject</groupId>
+				<artifactId>javax.inject</artifactId>
+				<version>1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>5.0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.typesafe</groupId>
+				<artifactId>config</artifactId>
+				<version>1.4.1</version>
+			</dependency>
 
 			<!--
 				QA libs
@@ -157,11 +214,11 @@
 				<groupId>com.github.spotbugs</groupId>
 				<artifactId>spotbugs-annotations</artifactId>
 				<version>4.5.2</version>
+				<scope>provided</scope>
 				<optional>true</optional>
 			</dependency>
-
 			<!--
-				Testing libs
+				testing libs
 			-->
 			<!-- https://github.com/kotlintest/kotlintest -->
 			<dependency>
@@ -188,54 +245,6 @@
 				<artifactId>assertj-core</artifactId>
 				<version>${assertj.version}</version>
 				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>31.0.1-jre</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-lang3</artifactId>
-				<version>3.12.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-text</artifactId>
-				<version>1.9</version>
-			</dependency>
-
-			<dependency>
-				<groupId>com.squareup</groupId>
-				<artifactId>javapoet</artifactId>
-				<version>1.13.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>2.3.31</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.jbock-java</groupId>
-				<artifactId>compile-testing</artifactId>
-				<version>0.19.10</version>
-			</dependency>
-
-			<dependency>
-				<groupId>javax.inject</groupId>
-				<artifactId>javax.inject</artifactId>
-				<version>1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.inject</groupId>
-				<artifactId>guice</artifactId>
-				<version>5.0.1</version>
-			</dependency>
-			<dependency>
-				<groupId>com.typesafe</groupId>
-				<artifactId>config</artifactId>
-				<version>1.4.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -269,17 +278,6 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.8</version>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
 			</plugin>
 			<plugin>
 				<!--
@@ -318,6 +316,17 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.8</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
 			</plugin>
 			<plugin>
 				<!--
