@@ -44,6 +44,8 @@
 		<log4j2.version>2.17.0</log4j2.version>
 
 		<kotlin.version>1.6.10</kotlin.version>
+		<!-- https://kotlinlang.org/docs/maven.html#specifying-compiler-options -->
+		<kotlin.compiler.apiVersion>1.5</kotlin.compiler.apiVersion>
 		<netty.version>4.1.67.Final</netty.version>
 
 		<!-- testing dependencies versions -->
