@@ -10,5 +10,22 @@
 
 	<artifactId>auto-pipeline</artifactId>
 	<name>${project.artifactId}</name>
+	<description>auto-pipeline is a source code generator that auto generate the component's pipeline.</description>
+	<url>https://github.com/foldright/auto-pipeline</url>
+	<inceptionYear>2021</inceptionYear>
+
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<scm>
+		<connection>scm:git:git@github.com:foldright/auto-pipeline.git</connection>
+		<developerConnection>scm:git:git@github.com:foldright/auto-pipeline.git</developerConnection>
+		<url>https://github.com/foldright/auto-pipeline</url>
+	</scm>
 
 </project>
