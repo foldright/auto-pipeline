@@ -6,7 +6,7 @@ import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
 class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
-    AbstractGenerator(desc, filer) {
+    AbstractGenerator(desc) {
 
     fun gen() {
         val abstractContextClassBuilder = TypeSpec.classBuilder(desc.abstractHandlerContextRawClassName)
@@ -61,8 +61,7 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
             .build()
         abstractContextClassBuilder.addMethod(pipelineMethod)
 
-        JavaFile.builder(desc.abstractHandlerContextRawClassName.packageName(), abstractContextClassBuilder.build())
-            .skipJavaLangImports(true)
+        javaFileBuilder(desc.abstractHandlerContextRawClassName.packageName(), abstractContextClassBuilder.build())
             .build()
             .writeTo(filer)
     }

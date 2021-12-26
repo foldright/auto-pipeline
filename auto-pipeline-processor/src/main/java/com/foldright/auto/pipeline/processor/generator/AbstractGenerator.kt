@@ -2,16 +2,22 @@ package com.foldright.auto.pipeline.processor.generator
 
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
-import com.squareup.javapoet.MethodSpec
-import com.squareup.javapoet.ParameterSpec
-import com.squareup.javapoet.TypeName
-import com.squareup.javapoet.TypeVariableName
-import javax.annotation.processing.Filer
+import com.squareup.javapoet.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 import javax.lang.model.type.TypeVariable
 
-abstract class AbstractGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) {
+abstract class AbstractGenerator(private val desc: AutoPipelineClassDescriptor) {
+
+    companion object {
+        private const val indent: String = "    "
+    }
+
+    protected fun javaFileBuilder(packageName: String, typeSpec: TypeSpec): JavaFile.Builder =
+        JavaFile.builder(packageName, typeSpec)
+            .skipJavaLangImports(true)
+            .indent(indent)
+
 
     protected fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
         desc.entityMethods.map {

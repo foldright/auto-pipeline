@@ -1,14 +1,13 @@
 package com.foldright.auto.pipeline.processor.generator
 
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
-import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.TypeSpec
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
 class DefaultHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
-    AbstractGenerator(desc, filer) {
+    AbstractGenerator(desc) {
 
     fun gen() {
         val defaultContextClassBuilder = TypeSpec.classBuilder(desc.defaultHandlerContextRawClassName)
@@ -34,8 +33,8 @@ class DefaultHandlerContextGenerator(private val desc: AutoPipelineClassDescript
             .build()
         defaultContextClassBuilder.addMethod(handlerMethod)
 
-        JavaFile.builder(desc.defaultHandlerContextRawClassName.packageName(), defaultContextClassBuilder.build())
-            .skipJavaLangImports(true)
+
+        javaFileBuilder(desc.defaultHandlerContextRawClassName.packageName(), defaultContextClassBuilder.build())
             .build()
             .writeTo(filer)
     }

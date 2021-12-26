@@ -1,7 +1,6 @@
 package com.foldright.auto.pipeline.processor.generator
 
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
-import com.squareup.javapoet.JavaFile
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.TypeSpec
 import org.apache.commons.lang3.StringUtils
@@ -9,7 +8,7 @@ import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
 class HandlerGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
-    AbstractGenerator(desc, filer) {
+    AbstractGenerator(desc) {
 
     fun gen() {
         val handlerTypeBuilder = TypeSpec.interfaceBuilder(desc.handlerRawClassName)
@@ -35,8 +34,7 @@ class HandlerGenerator(private val desc: AutoPipelineClassDescriptor, private va
             handlerTypeBuilder.addMethod(operationMethod)
         }
 
-        JavaFile.builder(desc.handlerRawClassName.packageName(), handlerTypeBuilder.build())
-            .skipJavaLangImports(true)
+        javaFileBuilder(desc.handlerRawClassName.packageName(), handlerTypeBuilder.build())
             .build()
             .writeTo(filer)
     }

@@ -1,12 +1,15 @@
 package com.foldright.auto.pipeline.processor.generator
 
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
-import com.squareup.javapoet.*
+import com.squareup.javapoet.MethodSpec
+import com.squareup.javapoet.ParameterizedTypeName
+import com.squareup.javapoet.TypeName
+import com.squareup.javapoet.TypeSpec
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
 
 class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
-    AbstractGenerator(desc, filer) {
+    AbstractGenerator(desc) {
 
     fun gen() {
         val pipelineClassBuilder = TypeSpec.classBuilder(desc.pipelineRawClassName)
@@ -180,8 +183,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
         pipelineClassBuilder.addType(tailContextClass)
 
 
-        JavaFile.builder(desc.pipelineRawClassName.packageName(), pipelineClassBuilder.build())
-            .skipJavaLangImports(true)
+        javaFileBuilder(desc.pipelineRawClassName.packageName(), pipelineClassBuilder.build())
             .build()
             .writeTo(filer)
     }
