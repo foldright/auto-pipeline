@@ -24,13 +24,6 @@ class HandlerGenerator(private val desc: AutoPipelineClassDescriptor, private va
                 .addParameter(contextParam)
                 .build()
 
-//            val operationMethod = MethodSpec.methodBuilder(it.methodName)
-//                .addModifiers(Modifier.ABSTRACT, Modifier.PUBLIC)
-//                .addParameters(it.params.map { param -> ParameterSpec.get(param) })
-//                .addParameter(contextParam)
-//                .returns(TypeName.get(it.returnType))
-//                .build()
-
             handlerTypeBuilder.addMethod(operationMethod)
         }
 
