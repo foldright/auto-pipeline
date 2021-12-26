@@ -42,6 +42,8 @@ for:
 
     after_test:
       - rm -rf $HOME/.m2/repository/com/foldright/auto-pipeline*
+      - rm -rf $HOME/.m2/wrapper/dists/*/*/*.zip
+      - rm -rf $HOME/.gradle/wrapper/dists/*/*/*.zip
       - rm -rf $HOME/.sdkman/archives/*
 
     cache:
@@ -49,6 +51,7 @@ for:
       #   Compressed cache item cannot exceed 1,048,576,000 bytes
       # skip below maven cache:
       - $HOME/.m2/
+      - $HOME/.gradle/
       - $HOME/.sdkman/
   -
     #------------------
