@@ -46,7 +46,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             .returns(desc.pipelineTypeName)
             .addCode(
                 """
-                ${'$'}T newCtx = new ${desc.defaultHandlerContextRawClassName.simpleName()}(this, handler);
+                ${'$'}T newCtx = new ${'$'}T(this, handler);
                 ${'$'}T nextCtx = head.next;
                 head.next = newCtx;
                 newCtx.prev = head;
@@ -54,7 +54,10 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 nextCtx.prev = newCtx;
 
                 return this;
-            """.trimIndent(), desc.abstractHandlerContextTypeName, desc.abstractHandlerContextTypeName
+            """.trimIndent(),
+                desc.abstractHandlerContextTypeName,
+                desc.defaultHandlerContextTypeName,
+                desc.abstractHandlerContextTypeName
             ).build()
         pipelineClassBuilder.addMethod(addFirstMethod)
 
@@ -85,7 +88,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             .returns(desc.pipelineTypeName)
             .addCode(
                 """
-                ${'$'}T newCtx = new ${desc.defaultHandlerContextRawClassName.simpleName()}(this, handler);
+                ${'$'}T newCtx = new ${'$'}T(this, handler);
                 ${'$'}T prevCtx = tail.prev;
 
                 newCtx.prev = prevCtx;
@@ -94,7 +97,10 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                 tail.prev = newCtx;
 
                 return this;
-            """.trimIndent(), desc.abstractHandlerContextTypeName, desc.abstractHandlerContextTypeName
+            """.trimIndent(),
+                desc.abstractHandlerContextTypeName,
+                desc.defaultHandlerContextTypeName,
+                desc.abstractHandlerContextTypeName
             ).build()
         pipelineClassBuilder.addMethod(addLastMethod)
 
