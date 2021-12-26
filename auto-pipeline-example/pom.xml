@@ -28,6 +28,14 @@
 		<url>https://github.com/foldright/auto-pipeline</url>
 	</scm>
 
+	<properties>
+		<!--
+			skip deploy for example module
+			https://maven.apache.org/plugins/maven-deploy-plugin/deploy-mojo.html#skip
+		-->
+		<maven.deploy.skip>true</maven.deploy.skip>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<!--
