@@ -28,7 +28,7 @@ class DefaultHandlerContextGenerator(private val desc: AutoPipelineClassDescript
         val handlerMethod = MethodSpec.methodBuilder("handler")
             .addAnnotation(Override::class.java)
             .addModifiers(Modifier.PROTECTED)
-            .returns(desc.handlerRawClassName)
+            .returns(desc.handlerTypeName)
             .addStatement("return handler")
             .build()
         defaultContextClassBuilder.addMethod(handlerMethod)
