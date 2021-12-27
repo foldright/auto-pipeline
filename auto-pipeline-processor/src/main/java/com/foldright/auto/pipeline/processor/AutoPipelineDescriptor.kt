@@ -110,5 +110,11 @@ class AutoPipelineClassDescriptor(
 class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement) {
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
-    val params: MutableList<out VariableElement> = executableElement.parameters
+    val params: List<VariableElement> = executableElement.parameters
+
+    companion object {
+        fun List<VariableElement>.expand() = this.joinToString(",") {
+            it.simpleName
+        }
+    }
 }

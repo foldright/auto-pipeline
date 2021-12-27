@@ -7,6 +7,7 @@ import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.TypeSpec
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
+import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
 
 class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
     AbstractGenerator(desc) {
@@ -35,8 +36,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
         pipelineClassBuilder.addMethod(pipelineConstructor)
         pipelineClassBuilder.addMethods(genPipelineOverrideMethods {
             when (TypeName.get(it.returnType)) {
-                TypeName.VOID -> "head.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
-                else -> "return head.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
+                TypeName.VOID -> "head.${it.methodName}(${it.params.expand()});"
+                else -> "return head.${it.methodName}(${it.params.expand()});"
             }
         })
 
@@ -144,8 +145,8 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             )
             .addMethods(genPipelineOverrideMethods {
                 when (TypeName.get(it.returnType)) {
-                    TypeName.VOID -> "next.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
-                    else -> "return next.${it.methodName}(${it.params.joinToString(", ") { it.simpleName }});"
+                    TypeName.VOID -> "next.${it.methodName}(${it.params.expand()});"
+                    else -> "return next.${it.methodName}(${it.params.expand()});"
                 }
             })
             .build()
