@@ -7,5 +7,5 @@ import java.util.List;
 @AutoPipeline
 public interface Merger<T> {
 
-    T choose(List<T> elements);
+    T merge(List<T> elements);
 }

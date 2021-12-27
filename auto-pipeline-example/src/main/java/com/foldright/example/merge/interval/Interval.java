@@ -1,4 +1,4 @@
-package com.foldright.example.merge2;
+package com.foldright.example.merge.interval;
 
 public interface Interval {
 

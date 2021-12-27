@@ -6,13 +6,13 @@ the example project for `auto-pipline`. Including below examples:
     - [`ConfigSource`](src/main/java/com/foldright/example/config/ConfigSource.java)
     - [`LoadBalancer`](src/main/java/com/foldright/example/lb/LoadBalancer.java)
     - [`Merger`](src/main/java/com/foldright/example/merge/Merger.java)
-    - [`Merger2`](src/main/java/com/foldright/example/merge2/Merger2.java)
+    - [`IntervalMerger`](src/main/java/com/foldright/example/merge/interval/IntervalMerger.java)
     - [`Channel`](src/main/java/com/foldright/example/grpc/Channel.java)
 - usage of pipline implementation by test code:
     - [`ConfigSourceTest`](src/test/java/com/foldright/example/config/pipeline/ConfigSourceTest.kt)
     - `LoadBalancerTest` WIP
     - `MergerTest` WIP
-    - `Merger2Test` WIP
+    - `IntervalMergerTest` WIP
     - `ChannelTest` WIP
 
 ## run examples by `maven`
