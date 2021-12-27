@@ -1,6 +1,7 @@
 package com.foldright.auto.pipeline.processor.generator
 
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
+import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.TypeSpec
 import org.apache.commons.lang3.StringUtils
@@ -16,7 +17,7 @@ class HandlerGenerator(private val desc: AutoPipelineClassDescriptor, private va
             .addModifiers(Modifier.PUBLIC)
 
         val contextParam = ParameterSpec.builder(
-            desc.handlerContextTypeName, StringUtils.uncapitalize(desc.handlerContextRawClassName.simpleName())
+            desc.handlerContextTypeName, desc.handlerContextRawClassName.asFieldName()
         ).build()
 
         desc.entityMethods.forEach {
@@ -31,4 +32,7 @@ class HandlerGenerator(private val desc: AutoPipelineClassDescriptor, private va
             .build()
             .writeTo(filer)
     }
+
+
+    private fun ClassName.asFieldName(): String = StringUtils.uncapitalize(this.simpleName())
 }
