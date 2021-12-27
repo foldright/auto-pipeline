@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -14,12 +15,17 @@ repositories {
 }
 
 dependencies {
+    implementation("org.apache.commons:commons-lang3:3.12.0")
+
+    /*
+     * annotation processor dependencies
+     */
     compileOnly("com.foldright.auto-pipeline:auto-pipeline:$version")
     annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:$version")
 
-    implementation("org.apache.commons:commons-lang3:3.12.0")
-
-    // test dependencies
+    /*
+     * testing dependencies
+     */
     testImplementation(kotlin("test"))
     // https://kotest.io/docs/quickstart
     val kotestVersion = "5.0.3"
@@ -27,6 +33,14 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-property-jvm:$kotestVersion")
     testImplementation("org.assertj:assertj-core:3.21.0")
+
+    /*
+     * dependency constraint by using bom
+     */
+    val kotlinVersion = project.getKotlinPluginVersion()
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
+    implementation(platform("org.junit:junit-bom:5.8.2"))
+    implementation(platform("org.apache.logging.log4j:log4j-bom:2.17.0"))
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
