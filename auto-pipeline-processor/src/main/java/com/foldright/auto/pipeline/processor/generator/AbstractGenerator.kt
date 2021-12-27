@@ -2,6 +2,7 @@ package com.foldright.auto.pipeline.processor.generator
 
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
 import com.squareup.javapoet.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
@@ -25,6 +26,15 @@ abstract class AbstractGenerator(private val desc: AutoPipelineClassDescriptor) 
                 .addCode(statement.invoke(it))
                 .build()
         }
+
+    protected fun genPipelineOverrideMethodsViaDelegate(delegate: String): List<MethodSpec> =
+        genPipelineOverrideMethods {
+            when (TypeName.get(it.returnType)) {
+                TypeName.VOID -> "${delegate}.${it.methodName}(${it.params.expand()});"
+                else -> "return ${delegate}.${it.methodName}(${it.params.expand()});"
+            }
+        }
+
 
     protected fun createMethodSpecBuilder(method: ExecutableElement): MethodSpec.Builder {
         val modifiers = method.modifiers
