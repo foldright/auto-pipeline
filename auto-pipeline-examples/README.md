@@ -13,7 +13,7 @@ The examples project for `auto-pipline`. Including below examples:
     - `LoadBalancerTest` WIP
     - `MergerTest` WIP
     - `IntervalMergerTest` WIP
-    - `ChannelTest` WIP
+    - [`ChannelTest`](src/test/java/com/foldright/examples/grpc/pipeline/ChannelTest.kt)
 
 ## Run examples by `maven`
 

@@ -1,5 +1,14 @@
 package com.foldright.examples.grpc;
 
-public abstract class ClientCall<ReqT, RespT> {
-    // noop, just an example
+public class ClientCall<ReqT, RespT> {
+
+    private final CallOptions callOptions;
+
+    public ClientCall(CallOptions callOptions) {
+        this.callOptions = callOptions;
+    }
+
+    public CallOptions getCallOptions() {
+        return callOptions;
+    }
 }
