@@ -40,6 +40,16 @@
 			</roles>
 			<timezone>+8</timezone>
 		</developer>
+		<developer>
+			<name>Jerry Lee</name>
+			<id>oldratlee</id>
+			<email>oldratlee(AT)gmail(DOT)com</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+			<timezone>+8</timezone>
+			<url>https://github.com/oldratlee</url>
+		</developer>
 	</developers>
 
 	<properties>
