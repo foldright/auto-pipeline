@@ -14,7 +14,7 @@
 	<modules>
 		<module>auto-pipeline-annotations</module>
 		<module>auto-pipeline-processor</module>
-		<module>auto-pipeline-example</module>
+		<module>auto-pipeline-examples</module>
 	</modules>
 
 	<licenses>

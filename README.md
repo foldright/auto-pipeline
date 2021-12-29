@@ -15,9 +15,9 @@ auto-pipeline is a source code generator that auto generate the component's pipe
 
 auto-pipeline is an annotation-processor for Pipeline generator, which is inspired by Google's [Auto](https://github.com/google/auto). ❤️
 
-## a quick example
+## quick examples
 
-please check the [example project](auto-pipeline-example), and it's test case.
+please check the [examples project](auto-pipeline-examples), and it's test case.
 
 ## quick start
 
