@@ -8,7 +8,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>auto-pipeline</artifactId>
+	<artifactId>auto-pipeline-annotations</artifactId>
 	<name>${project.artifactId}</name>
 	<description>auto-pipeline is a source code generator that auto generate the component's pipeline.</description>
 	<url>https://github.com/foldright/auto-pipeline</url>

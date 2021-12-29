@@ -12,7 +12,7 @@
 	<inceptionYear>2021</inceptionYear>
 
 	<modules>
-		<module>auto-pipeline</module>
+		<module>auto-pipeline-annotations</module>
 		<module>auto-pipeline-processor</module>
 		<module>auto-pipeline-example</module>
 	</modules>

@@ -20,7 +20,7 @@ dependencies {
     /*
      * annotation processor dependencies
      */
-    compileOnly("com.foldright.auto-pipeline:auto-pipeline:$version")
+    compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:$version")
     annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:$version")
 
     /*

@@ -31,7 +31,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.foldright.auto-pipeline</groupId>
-			<artifactId>auto-pipeline</artifactId>
+			<artifactId>auto-pipeline-annotations</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
