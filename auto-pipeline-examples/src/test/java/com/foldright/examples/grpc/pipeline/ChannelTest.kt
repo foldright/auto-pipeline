@@ -5,9 +5,12 @@ import com.foldright.examples.grpc.ClientCall
 import com.foldright.examples.grpc.MethodDescriptor
 import com.foldright.examples.grpc.handler.DefaultChannelHandler
 import com.foldright.examples.grpc.handler.TransformClientCallChannelHandler
+import com.foldright.examples.grpc.handler.TransformClientCallChannelHandler.ClientCallWrapper
 import com.foldright.examples.grpc.handler.WrapCallOptionsChannelHandler
+import com.foldright.examples.grpc.handler.WrapCallOptionsChannelHandler.CallOptionsWrapper
 import io.kotest.core.spec.style.AnnotationSpec
-import io.kotest.matchers.shouldBe
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.types.shouldBeTypeOf
 
 class ChannelTest : AnnotationSpec() {
 
@@ -22,7 +25,7 @@ class ChannelTest : AnnotationSpec() {
             CallOptions()
         )
 
-        newCall shouldBe null
+        newCall.shouldBeNull()
     }
 
     @Test
@@ -35,7 +38,7 @@ class ChannelTest : AnnotationSpec() {
             CallOptions()
         )
 
-        newCall.javaClass shouldBe ClientCall::class.java
+        newCall.shouldBeTypeOf<ClientCall<String, String>>()
     }
 
     @Test
@@ -44,13 +47,12 @@ class ChannelTest : AnnotationSpec() {
             .addLast(WrapCallOptionsChannelHandler())
             .addLast(DefaultChannelHandler())
 
-
         val newCall = pipeline.newCall(
             MethodDescriptor<String, String>("fullMethodName", "serviceName"),
             CallOptions()
         )
 
-        newCall.callOptions.javaClass shouldBe WrapCallOptionsChannelHandler.CallOptionsWrapper::class.java
+        newCall.callOptions.shouldBeTypeOf<CallOptionsWrapper>()
     }
 
     @Test
@@ -66,6 +68,6 @@ class ChannelTest : AnnotationSpec() {
             CallOptions()
         )
 
-        newCall.javaClass shouldBe TransformClientCallChannelHandler.ClientCallWrapper::class.java
+        newCall.shouldBeTypeOf<ClientCallWrapper<String, String>>()
     }
 }
