@@ -67,6 +67,16 @@
 	<profiles>
 		<profile>
 			<id>gen-doc</id>
+			<!--
+			Profiles are not inherited from parent pom
+			see: https://stackoverflow.com/questions/46681281/maven-active-by-default-profile-in-parent-does-not-propagate-to-children
+			-->
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<!-- use dokka-maven-plugin to generate javadoc for kotlin project -->
