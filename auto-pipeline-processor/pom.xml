@@ -63,4 +63,31 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>gen-doc</id>
+			<build>
+				<plugins>
+					<!-- use dokka-maven-plugin to generate javadoc for kotlin project -->
+					<!-- see: https://kotlin.github.io/dokka/1.6.10/user_guide/maven/usage/ -->
+					<plugin>
+						<groupId>org.jetbrains.dokka</groupId>
+						<artifactId>dokka-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>javadocJar</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<jdkVersion>${dokka.link.jdk.version}</jdkVersion>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

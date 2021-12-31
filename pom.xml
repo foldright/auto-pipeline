@@ -69,6 +69,8 @@
 		<junit5.version>5.8.2</junit5.version>
 		<kotest.version>5.0.3</kotest.version>
 		<assertj.version>3.21.0</assertj.version>
+		<dokka.version>1.6.10</dokka.version>
+		<dokka.link.jdk.version>8</dokka.link.jdk.version>
 	</properties>
 
 	<distributionManagement>
@@ -394,6 +396,11 @@
 				<plugin>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.3.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.jetbrains.dokka</groupId>
+					<artifactId>dokka-maven-plugin</artifactId>
+					<version>${dokka.version}</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
