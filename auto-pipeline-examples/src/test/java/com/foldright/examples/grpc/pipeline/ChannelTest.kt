@@ -38,7 +38,7 @@ class ChannelTest : AnnotationSpec() {
             CallOptions()
         )
 
-        newCall.shouldBeTypeOf<ClientCall<String, String>>()
+        newCall.shouldBeTypeOf<ClientCall<*, *>>()
     }
 
     @Test
@@ -68,6 +68,6 @@ class ChannelTest : AnnotationSpec() {
             CallOptions()
         )
 
-        newCall.shouldBeTypeOf<ClientCallWrapper<String, String>>()
+        newCall.shouldBeTypeOf<ClientCallWrapper<*, *>>()
     }
 }
