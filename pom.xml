@@ -497,7 +497,6 @@
 					<name>performRelease</name>
 					<value>true</value>
 				</property>
-				<jdk>11</jdk>
 			</activation>
 			<build>
 				<plugins>
@@ -521,13 +520,6 @@
 							<excludePackageNames>*.internal.*</excludePackageNames>
 							<overview>src/api/overview.html</overview>
 							<additionalJOptions>
-								<!--
-									Maven javadoc Search redirects to "/undefined/.." url - Stack Overflow
-									https://stackoverflow.com/questions/52326318
-								-->
-								<additionalJOption>--no-module-directories</additionalJOption>
-
-								<additionalJOption>-html5</additionalJOption>
 								<additionalJOption>-quiet</additionalJOption>
 								<additionalJOption>-J-Duser.language=en</additionalJOption>
 								<additionalJOption>-J-Duser.country=US</additionalJOption>
