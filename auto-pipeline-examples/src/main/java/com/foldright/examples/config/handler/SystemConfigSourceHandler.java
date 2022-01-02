@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SystemConfigSourceHandler implements ConfigSourceHandler {
 
+    public static final SystemConfigSourceHandler INSTANCE = new SystemConfigSourceHandler();
+
     @Override
     public String get(String key, ConfigSourceHandlerContext context) {
         String value = System.getProperty(key);

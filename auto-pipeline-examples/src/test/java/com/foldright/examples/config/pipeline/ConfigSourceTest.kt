@@ -22,12 +22,11 @@ class ConfigSourceTest : AnnotationSpec() {
     fun testMap() {
         val placeholderConfigSource = PlaceholderConfigSourceHandler()
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2"))
-        val propConfigSource = SystemConfigSourceHandler()
 
         pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
-            .addLast(propConfigSource)
+            .addLast(SystemConfigSourceHandler.INSTANCE)
 
         pipeline.get("a") shouldBe "1"
     }
@@ -36,12 +35,11 @@ class ConfigSourceTest : AnnotationSpec() {
     fun testFallback() {
         val placeholderConfigSource = PlaceholderConfigSourceHandler()
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2"))
-        val propConfigSource = SystemConfigSourceHandler()
 
         pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
-            .addLast(propConfigSource)
+            .addLast(SystemConfigSourceHandler.INSTANCE)
 
         pipeline.get("java.home") shouldBe System.getProperty("java.home")
     }
@@ -50,12 +48,11 @@ class ConfigSourceTest : AnnotationSpec() {
     fun testPlaceholder() {
         val placeholderConfigSource = PlaceholderConfigSourceHandler()
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2\${a}"))
-        val propConfigSource = SystemConfigSourceHandler()
 
         pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
-            .addLast(propConfigSource)
+            .addLast(SystemConfigSourceHandler.INSTANCE)
 
         pipeline.get("b") shouldBe "21"
         pipeline.get("a") shouldBe "1"
@@ -65,12 +62,11 @@ class ConfigSourceTest : AnnotationSpec() {
     fun testPlaceholder_2_jumps() {
         val placeholderConfigSource = PlaceholderConfigSourceHandler()
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2\${a}", "c" to "3\${b}"))
-        val propConfigSource = SystemConfigSourceHandler()
 
         pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
-            .addLast(propConfigSource)
+            .addLast(SystemConfigSourceHandler.INSTANCE)
 
         pipeline.get("c") shouldBe "321"
     }
@@ -79,12 +75,11 @@ class ConfigSourceTest : AnnotationSpec() {
     fun testOverride() {
         val placeholderConfigSource = PlaceholderConfigSourceHandler()
         val mapConfigSource = MapConfigSourceHandler(mapOf("a" to "1", "b" to "2", "java.home" to "3"))
-        val propConfigSource = SystemConfigSourceHandler()
 
         val pipeline = ConfigSourcePipeline()
             .addLast(placeholderConfigSource)
             .addLast(mapConfigSource)
-            .addLast(propConfigSource)
+            .addLast(SystemConfigSourceHandler.INSTANCE)
 
         val aValue = pipeline.get("java.home")
         aValue shouldBe "3"
