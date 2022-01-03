@@ -34,12 +34,12 @@ class AutoPipelineProcessor : AbstractProcessor() {
 
         for (element in elements) {
             if (element.kind != ElementKind.INTERFACE) {
-                error(element, "Only interface can annotated with @${AutoPipeline::class.simpleName}")
+                error(element, "${(element as TypeElement).qualifiedName} is not a interface! Only interface can annotated with @${AutoPipeline::class.simpleName}")
                 return false
             }
 
             if (!element.modifiers.contains(Modifier.PUBLIC)) {
-                error(element, "Only interface can annotated with @${AutoPipeline::class.simpleName}")
+                error(element, "interface ${(element as TypeElement).qualifiedName} is not public! Only public interface can annotated with @${AutoPipeline::class.simpleName}")
                 return false
             }
 
