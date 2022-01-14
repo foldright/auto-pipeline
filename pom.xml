@@ -199,7 +199,7 @@
 			<dependency>
 				<groupId>io.github.jbock-java</groupId>
 				<artifactId>compile-testing</artifactId>
-				<version>0.19.10</version>
+				<version>0.19.11</version>
 				<scope>test</scope>
 			</dependency>
 
