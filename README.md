@@ -103,18 +103,15 @@ public interface ConfigSource {
 }
 ```
 
-and once's the code compiled, `auto-pipeline-processor` will generate 5 java files for us:
+`auto-pipeline-processor` will auto generate pipeline java files for `ConfigSource` into subpackage `pipeline` when compiled:
 
-- `ConfigSourceHandler.java`
-- `ConfigSourcePipeline.java`
-- `ConfigSourceHandlerContext.java`
-- `AbstractConfigSourceHandlerContext.java`
-- `DefaultConfigSourceHandlerContext.java`
-
-the most import java files are：
-
-- `ConfigSourceHandler.java`: the responsibility interface we want to implement for extensibility
-- `ConfigSourcePipeline.java`: the chain
+- `ConfigSourceHandler`  
+  the responsibility interface we want to implement for extensibility
+- `ConfigSourcePipeline`  
+  the chain
+- `ConfigSourceHandlerContext`
+- `AbstractConfigSourceHandlerContext`
+- `DefaultConfigSourceHandlerContext`
 
 ### 2. implementing your handler for pipeline
 
@@ -122,7 +119,6 @@ we can implement `MapConfigSourceHandler` and `SystemConfigSourceHandler` (they 
 
 ```java
 public class MapConfigSourceHandler implements ConfigSourceHandler {
-
     private final Map<String, String> map;
 
     public MapConfigSourceHandler(Map<String, String> map) {
@@ -142,7 +138,6 @@ public class MapConfigSourceHandler implements ConfigSourceHandler {
 }
 
 public class SystemConfigSourceHandler implements ConfigSourceHandler {
-
     @Override
     public String get(String key, ConfigSourceHandlerContext context) {
         String value = System.getProperty(key);
@@ -154,17 +149,34 @@ public class SystemConfigSourceHandler implements ConfigSourceHandler {
 }
 ```
 
-then, we can create a `ConfigSourcePipeline` which can ben an entrance of the `ConfigSource`:
+### 3. use the pipeline
+
+create a `ConfigSourcePipeline` by composing `ConfigSourceHandler`s which can ben an entrance of the `ConfigSource`:
 
 ```java
-pipeline = new ConfigSourcePipeline()
-            .addLast(new MapConfigSourceHandler(new HashMap<String,String>()))
-            .addLast(SystemConfigSourceHandler.INSTANCE);
+Map<String, String> mapConfig = new HashMap<String,String>();
+mapConfig.put("hello", "world");
+ConfigSourceHandler mapConfigSourceHandler = new MapConfigSourceHandler(mapConfig);
+
+ConfigSource pipeline = new ConfigSourcePipeline()
+        .addLast(mapConfigSourceHandler)
+        .addLast(SystemConfigSourceHandler.INSTANCE);
 ```
+
 
 now, we can use the `pipeline.get(...)` to invoke the chain! 🎉
 
-check the [test case](auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt) for details.
+```java
+pipeline.get("hello");
+// get "world"
+// from mapConfig / mapConfigSourceHandler
+
+pipeline.get("java.specification.version")
+// get "1.8"
+// from system properties / SystemConfigSourceHandler
+```
+
+check the runnable [test case](auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt) for details.
 
 ## License
 
