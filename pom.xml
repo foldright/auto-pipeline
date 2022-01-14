@@ -376,7 +376,7 @@
 						Finding the root directory of a multi module maven reactor project - Stack Overflow
 						https://stackoverflow.com/questions/3084629
 					-->
-					<rulesUri>file://${maven.multiModuleProjectDirectory}/src/versions-rules.xml</rulesUri>
+					<rulesUri>file://${maven.multiModuleProjectDirectory}/auto-pipeline-processor/src/versions-rules.xml</rulesUri>
 					<generateBackupPoms>false</generateBackupPoms>
 				</configuration>
 			</plugin>
