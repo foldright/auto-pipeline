@@ -32,7 +32,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-property-jvm:$kotestVersion")
-    testImplementation("org.assertj:assertj-core:3.21.0")
+    testImplementation("org.assertj:assertj-core:3.22.0")
 
     /*
      * dependency constraint by using bom
@@ -40,7 +40,7 @@ dependencies {
     val kotlinVersion = project.getKotlinPluginVersion()
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
     implementation(platform("org.junit:junit-bom:5.8.2"))
-    implementation(platform("org.apache.logging.log4j:log4j-bom:2.17.0"))
+    implementation(platform("org.apache.logging.log4j:log4j-bom:2.17.1"))
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
