@@ -20,7 +20,7 @@ Google's [`Auto`](https://github.com/google/auto). ❤️
 
 ## quick examples
 
-below is a brief introduction. please check the [examples project](auto-pipeline-examples) and it's test cases for details.
+below is a brief introduction. please check the [examples project](auto-pipeline-examples), and it's test cases for details.
 
 ## quick start
 
@@ -32,17 +32,11 @@ for `maven` project:
 
 ```xml
 <dependencies>
-    <!-- the auto-pipeline annotation you will use in your interface type -->
-    <dependency>
-        <groupId>com.foldright.auto-pipeline</groupId>
-        <artifactId>auto-pipeline-annotations</artifactId>
-        <version>0.1.0</version>
-    </dependency>
-
     <!--
         the auto-pipeline annotation processor,
-        it will generate the pipeline classed for the interface.
-        the processor's scope can be provided because we only need it at compile time.
+          it will generate the pipeline classed for the interface.
+        the processor's scope should be provided
+          because we only need it at compile time.
     -->
     <dependency>
         <groupId>com.foldright.auto-pipeline</groupId>
@@ -59,7 +53,6 @@ for `gradle` project:
 /*
  * Gradle Kotlin DSL
  */
-
 // the auto-pipeline annotation you will use in your interface type
 compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.1.0")
 // the auto-pipeline annotation processor,
@@ -92,7 +85,7 @@ public interface ConfigSource {
 }
 ```
 
-say, we want `ConfigSource#get()` has some extensibility, so we decide to apply the `chain of responsibility` pattern to it.
+say, we want `ConfigSource#get()` has some extensibility, so we decide to apply the `chain of responsibility` pattern to it for extensibility.
 
 Now it's `auto-pipeline`'s turn to play a role, we simply add `@AutoPipelin` to `ConfigSource`：
 
@@ -115,7 +108,7 @@ public interface ConfigSource {
 
 ### 2. implementing your handler for pipeline
 
-we can implement `MapConfigSourceHandler` and `SystemConfigSourceHandler` (they are all in the [configSource handler example](auto-pipeline-examples/src/main/java/com/foldright/examples/config/handler)):
+we can implement `MapConfigSourceHandler` and `SystemConfigSourceHandler` (they are all in the [ConfigSource handler example](auto-pipeline-examples/src/main/java/com/foldright/examples/config/handler)):
 
 ```java
 public class MapConfigSourceHandler implements ConfigSourceHandler {
@@ -128,16 +121,16 @@ public class MapConfigSourceHandler implements ConfigSourceHandler {
     @Override
     public String get(String key, ConfigSourceHandlerContext context) {
         String value = map.get(key);
-
         if (StringUtils.isNotBlank(value)) {
             return value;
         }
-
         return context.get(key);
     }
 }
 
 public class SystemConfigSourceHandler implements ConfigSourceHandler {
+    public static final SystemConfigSourceHandler INSTANCE = new SystemConfigSourceHandler();
+
     @Override
     public String get(String key, ConfigSourceHandlerContext context) {
         String value = System.getProperty(key);
@@ -154,7 +147,7 @@ public class SystemConfigSourceHandler implements ConfigSourceHandler {
 create a `ConfigSourcePipeline` by composing `ConfigSourceHandler`s which can ben an entrance of the `ConfigSource`:
 
 ```java
-Map<String, String> mapConfig = new HashMap<String,String>();
+Map<String, String> mapConfig = new HashMap<String, String>();
 mapConfig.put("hello", "world");
 ConfigSourceHandler mapConfigSourceHandler = new MapConfigSourceHandler(mapConfig);
 
@@ -168,11 +161,11 @@ now, we can use the `pipeline.get(...)` to invoke the chain! 🎉
 
 ```java
 pipeline.get("hello");
-// get "world"
+// get value "world"
 // from mapConfig / mapConfigSourceHandler
 
 pipeline.get("java.specification.version")
-// get "1.8"
+// get value "1.8"
 // from system properties / SystemConfigSourceHandler
 ```
 
