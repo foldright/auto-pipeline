@@ -1,5 +1,6 @@
 package com.foldright.auto.pipeline.processor
 
+import com.foldright.auto.pipeline.PipelineDirection
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeName
@@ -97,6 +98,9 @@ class AutoPipelineClassDescriptor(
         }
     }
 
+    val pipelineStateTypeNameRawClassName: ClassName = ClassName.get(pipelineRawClassName.canonicalName(), "PipelineState")
+    val pipelineStateTypeName: TypeName = pipelineStateTypeNameRawClassName
+
 
     val entityMethods = elements.getAllMembers(entityElement)
         .filterNotNull()
@@ -111,6 +115,12 @@ class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement) 
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
     val params: List<VariableElement> = executableElement.parameters
+    private val direction: PipelineDirection.Direction =
+        executableElement.getAnnotation(PipelineDirection::class.java)?.direction ?: PipelineDirection.Direction.FORWARD
+
+    fun reversePipe() = direction == PipelineDirection.Direction.REVERSE
+
+
 
     companion object {
         fun List<VariableElement>.expand() = this.joinToString(",") {

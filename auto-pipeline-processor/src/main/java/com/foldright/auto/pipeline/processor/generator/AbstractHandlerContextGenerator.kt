@@ -8,6 +8,10 @@ import javax.lang.model.element.Modifier
 
 class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescriptor, private val filer: Filer) :
     AbstractGenerator(desc) {
+    private val prevHandlerContextFieldName = "prev"
+    private val nextHandlerContextFieldName = "next"
+    private val pipelineFieldName = "pipeline"
+    private val handlerMethodName = "handler"
 
     fun gen() {
         val abstractContextClassBuilder = TypeSpec.classBuilder(desc.abstractHandlerContextRawClassName)
@@ -16,49 +20,53 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
             .addSuperinterface(desc.handlerContextTypeName)
 
         val pipelineField =
-            FieldSpec.builder(desc.pipelineTypeName, "pipeline", Modifier.PRIVATE, Modifier.FINAL).build()
+            FieldSpec.builder(desc.pipelineTypeName, pipelineFieldName, Modifier.PRIVATE, Modifier.FINAL).build()
         abstractContextClassBuilder.addField(pipelineField)
 
         val prevContextField =
-            FieldSpec.builder(desc.abstractHandlerContextTypeName, "prev", Modifier.VOLATILE)
+            FieldSpec.builder(desc.abstractHandlerContextTypeName, prevHandlerContextFieldName, Modifier.VOLATILE)
                 .build()
         abstractContextClassBuilder.addField(prevContextField)
 
         val nextContextField =
-            FieldSpec.builder(desc.abstractHandlerContextTypeName, "next", Modifier.VOLATILE)
+            FieldSpec.builder(desc.abstractHandlerContextTypeName, nextHandlerContextFieldName, Modifier.VOLATILE)
                 .build()
         abstractContextClassBuilder.addField(nextContextField)
 
         val constructor = MethodSpec.constructorBuilder()
             .addModifiers(Modifier.PUBLIC)
-            .addParameter(ParameterSpec.builder(desc.pipelineTypeName, "pipeline").build())
+            .addParameter(ParameterSpec.builder(desc.pipelineTypeName, pipelineFieldName).build())
             .addCode(
                 """
-                this.pipeline = pipeline;
+                this.${pipelineFieldName} = ${pipelineFieldName};
                 """.trimMargin()
             )
             .build()
         abstractContextClassBuilder.addMethod(constructor)
 
         val operationMethods = genPipelineOverrideMethods {
-            when (TypeName.get(it.returnType)) {
-                TypeName.VOID -> """handler().${it.methodName}(${it.params.expand()}, next);"""
-                else -> """return handler().${it.methodName}(${it.params.expand()}, next);"""
+            val invokeHandlerFieldName =
+                if (it.reversePipe()) prevHandlerContextFieldName else nextHandlerContextFieldName
+
+            val returnStatement = when (TypeName.get(it.returnType)) {
+                TypeName.VOID -> """${handlerMethodName}().${it.methodName}(${it.params.expand()}, ${invokeHandlerFieldName});"""
+                else -> """return ${handlerMethodName}().${it.methodName}(${it.params.expand()}, ${invokeHandlerFieldName});"""
             }
+            genMarkLastHandlerContextStatement() + returnStatement
         }
         abstractContextClassBuilder.addMethods(operationMethods)
 
-        val handlerMethod = MethodSpec.methodBuilder("handler")
+        val handlerMethod = MethodSpec.methodBuilder(handlerMethodName)
             .addModifiers(Modifier.PROTECTED, Modifier.ABSTRACT)
             .returns(desc.handlerTypeName)
             .build()
         abstractContextClassBuilder.addMethod(handlerMethod)
 
-        val pipelineMethod = MethodSpec.methodBuilder("pipeline")
+        val pipelineMethod = MethodSpec.methodBuilder(pipelineFieldName)
             .addAnnotation(Override::class.java)
             .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
             .returns(desc.pipelineTypeName)
-            .addCode("return pipeline;")
+            .addCode("return ${pipelineFieldName};")
             .build()
         abstractContextClassBuilder.addMethod(pipelineMethod)
 
