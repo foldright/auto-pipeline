@@ -14,10 +14,8 @@ import org.jetbrains.kotlin.konan.file.File
 class AutoPipelineProcessorTest : AnnotationSpec() {
     @Test
     fun test_AutoPipelineProcessor() {
-        val file = "test1/ConfigSource.java"
-
         val compileResult = KotlinCompilation().apply {
-            sources = listOf(SourceFile.java(file.fileName(), file.contentFromClassPath()))
+            sources = listOf(javaSourceFileOnClassPath("test1/ConfigSource.java"))
             annotationProcessors = listOf(AutoPipelineProcessor())
 
             inheritClassPath = true
@@ -35,8 +33,9 @@ class AutoPipelineProcessorTest : AnnotationSpec() {
         }
     }
 
-    private fun String.fileName() = File(this).name
-
-    private fun String.contentFromClassPath() =
-        AutoPipelineProcessorTest::class.java.classLoader.getResource(this)!!.readText()
+    @Suppress("SameParameterValue")
+    private fun javaSourceFileOnClassPath(filePath: String): SourceFile = SourceFile.java(
+        File(filePath).name,
+        javaClass.classLoader.getResource(filePath)!!.readText()
+    )
 }
