@@ -4,6 +4,7 @@ import com.foldright.auto.pipeline.processor.AutoPipelineProcessor
 import com.tschuchort.compiletesting.KotlinCompilation
 import com.tschuchort.compiletesting.SourceFile
 import io.kotest.core.spec.style.AnnotationSpec
+import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
 import org.jetbrains.kotlin.konan.file.File
@@ -22,6 +23,10 @@ class AutoPipelineProcessorTest : AnnotationSpec() {
 
             // see compile diagnostics in real time?
             verbose = false
+
+            // set work dir via `io.kotest.engine.spec.TempdirKt.tempdir`
+            // so auto delete the temp dir after test
+            workingDir = tempdir(AutoPipelineProcessorTest::class.qualifiedName)
         }.compile()
 
         compileResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
