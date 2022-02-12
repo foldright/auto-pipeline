@@ -1,5 +1,6 @@
 package com.foldright.auto.pipeline.processor
 
+import com.foldright.auto.pipeline.PipelineDirection
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeName
@@ -104,13 +105,21 @@ class AutoPipelineClassDescriptor(
         .filter {
             it.kind == ElementKind.METHOD && it.modifiers.contains(PUBLIC) && it.modifiers.contains(ABSTRACT)
         }
-        .map { AutoPipelineOperatorsDescriptor(it) }
+        .map { AutoPipelineOperatorsDescriptor(it, entityElement) }
 }
 
-class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement) {
+class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement, private val entityElement: TypeElement) {
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
     val params: List<VariableElement> = executableElement.parameters
+
+    private val defaultDirection : PipelineDirection.Direction by lazy {
+        entityElement.getAnnotation(PipelineDirection::class.java)?.value ?: PipelineDirection.Direction.FORWARD
+    }
+
+    val direction : PipelineDirection.Direction by lazy {
+        executableElement.getAnnotation(PipelineDirection::class.java)?.value ?: defaultDirection
+    }
 
     companion object {
         fun List<VariableElement>.expand() = this.joinToString(",") {

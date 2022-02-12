@@ -1,5 +1,6 @@
 package com.foldright.auto.pipeline.processor.generator
 
+import com.foldright.auto.pipeline.PipelineDirection
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
@@ -20,20 +21,30 @@ abstract class AbstractGenerator(private val desc: AutoPipelineClassDescriptor) 
             .indent(indent)
 
 
-    protected fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> String): List<MethodSpec> =
+    protected fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> CodeBlock): List<MethodSpec> =
         desc.entityMethods.map {
             MethodSpec.overriding(it.executableElement)
                 .addCode(statement.invoke(it))
                 .build()
         }
 
-    protected fun genPipelineOverrideMethodsViaDelegate(delegate: String): List<MethodSpec> =
+    protected fun genPipelineOverrideMethodsViaDelegate(): List<MethodSpec> =
         genPipelineOverrideMethods {
+
+            val delegate = when(it.direction) {
+                PipelineDirection.Direction.FORWARD -> "head"
+                PipelineDirection.Direction.REVERSE -> "tail"
+            }
+
             when (TypeName.get(it.returnType)) {
                 TypeName.VOID -> "${delegate}.${it.methodName}(${it.params.expand()});"
                 else -> "return ${delegate}.${it.methodName}(${it.params.expand()});"
-            }
+            }.toCodeBlock()
         }
+
+
+    protected fun String.toCodeBlock(vararg args: Any): CodeBlock =
+        CodeBlock.of(this, *args)
 
 
     protected fun createMethodSpecBuilder(method: ExecutableElement): MethodSpec.Builder {

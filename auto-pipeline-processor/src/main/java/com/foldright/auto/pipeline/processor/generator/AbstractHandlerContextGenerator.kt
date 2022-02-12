@@ -1,6 +1,8 @@
 package com.foldright.auto.pipeline.processor.generator
 
+import com.foldright.auto.pipeline.PipelineDirection
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
@@ -42,9 +44,9 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
 
         val operationMethods = genPipelineOverrideMethods {
             when (TypeName.get(it.returnType)) {
-                TypeName.VOID -> """handler().${it.methodName}(${it.params.expand()}, next);"""
-                else -> """return handler().${it.methodName}(${it.params.expand()}, next);"""
-            }
+                TypeName.VOID -> """handler().${it.methodName}(${it.params.expand()}, ${nextOrPrevCtx(it)});"""
+                else -> """return handler().${it.methodName}(${it.params.expand()}, ${nextOrPrevCtx(it)});"""
+            }.toCodeBlock()
         }
         abstractContextClassBuilder.addMethods(operationMethods)
 
@@ -62,8 +64,30 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
             .build()
         abstractContextClassBuilder.addMethod(pipelineMethod)
 
+
+        val findNextCtxMethod = MethodSpec.methodBuilder("findNextCtx")
+            .addModifiers(Modifier.PROTECTED, Modifier.FINAL)
+            .returns(desc.abstractHandlerContextTypeName)
+            .addCode("return next;")
+            .build()
+        abstractContextClassBuilder.addMethod(findNextCtxMethod)
+
+        val findPrevCtxMethod = MethodSpec.methodBuilder("findPrevCtx")
+            .addModifiers(Modifier.PROTECTED, Modifier.FINAL)
+            .returns(desc.abstractHandlerContextTypeName)
+            .addCode("return prev;")
+            .build()
+        abstractContextClassBuilder.addMethod(findPrevCtxMethod)
+
+
+
         javaFileBuilder(desc.abstractHandlerContextRawClassName.packageName(), abstractContextClassBuilder.build())
             .build()
             .writeTo(filer)
+    }
+
+    private fun nextOrPrevCtx(operatorDesc: AutoPipelineOperatorsDescriptor): String = when (operatorDesc.direction) {
+        PipelineDirection.Direction.FORWARD -> "findNextCtx()"
+        PipelineDirection.Direction.REVERSE -> "findPrevCtx()"
     }
 }

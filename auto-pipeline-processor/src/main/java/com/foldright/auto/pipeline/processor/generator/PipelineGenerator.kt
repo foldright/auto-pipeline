@@ -1,6 +1,8 @@
 package com.foldright.auto.pipeline.processor.generator
 
+import com.foldright.auto.pipeline.PipelineDirection
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
+import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterizedTypeName
 import com.squareup.javapoet.TypeName
@@ -33,7 +35,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             """.trimIndent()
             ).build()
         pipelineClassBuilder.addMethod(pipelineConstructor)
-        pipelineClassBuilder.addMethods(genPipelineOverrideMethodsViaDelegate("head"))
+        pipelineClassBuilder.addMethods(genPipelineOverrideMethodsViaDelegate())
 
         val addFirstMethod = MethodSpec.methodBuilder("addFirst")
             .addModifiers(Modifier.PUBLIC, Modifier.SYNCHRONIZED)
@@ -137,7 +139,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                     .addStatement("return null")
                     .build()
             )
-            .addMethods(genPipelineOverrideMethodsViaDelegate("next"))
+            .addMethods(genHeadAndTailOverrideMethods())
             .build()
         pipelineClassBuilder.addType(headContextClass)
 
@@ -160,21 +162,7 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
                     .addStatement("return null")
                     .build()
             )
-            .addMethods(genPipelineOverrideMethods {
-                val typeName = TypeName.get(it.returnType)
-                when {
-                    !typeName.isPrimitive -> "return null;"
-                    else -> when (typeName) {
-                        // TODO: Generating the default value is not good,
-                        //       since there is a assumption that user want the "tail" behavior.
-                        TypeName.VOID -> "//noop"
-                        TypeName.BOOLEAN -> "return false;"
-                        TypeName.BYTE, TypeName.SHORT, TypeName.INT, TypeName.LONG, TypeName.FLOAT, TypeName.DOUBLE -> "return 0;"
-                        TypeName.CHAR -> "return '0';"
-                        else -> "//no-op"
-                    }
-                }
-            })
+            .addMethods(genHeadAndTailOverrideMethods())
             .build()
         pipelineClassBuilder.addType(tailContextClass)
 
@@ -183,4 +171,42 @@ class PipelineGenerator(private val desc: AutoPipelineClassDescriptor, private v
             .build()
             .writeTo(filer)
     }
+
+    private fun genHeadAndTailOverrideMethods(): List<MethodSpec> =
+        genPipelineOverrideMethods {
+
+            val findCtxMethod = when(it.direction) {
+                PipelineDirection.Direction.FORWARD -> "findNextCtx()"
+                PipelineDirection.Direction.REVERSE -> "findPrevCtx()"
+            }
+
+            val invokeCtxStatement = when (TypeName.get(it.returnType)) {
+                TypeName.VOID ->
+                    """ctx.${it.methodName}(${it.params.expand()});
+                    return;
+                    """.trimIndent()
+                else -> "return ctx.${it.methodName}(${it.params.expand()});"
+            }
+
+
+            val returnStatement = when (TypeName.get(it.returnType)) {
+                // TODO: Generating the default value is not good,
+                //       since there is a assumption that user want the "tail" behavior.
+                TypeName.VOID -> "//noop"
+                TypeName.BOOLEAN -> "return false;"
+                TypeName.BYTE, TypeName.SHORT, TypeName.INT, TypeName.LONG, TypeName.FLOAT, TypeName.DOUBLE -> "return 0;"
+                TypeName.CHAR -> "return '0';"
+                else -> "return null;"
+            }
+
+            """
+                ${'$'}T ctx = ${findCtxMethod};
+                if(ctx != null) {
+                    $invokeCtxStatement
+                }
+
+                $returnStatement
+            """.trimIndent()
+               .toCodeBlock(desc.abstractHandlerContextTypeName)
+        }
 }
