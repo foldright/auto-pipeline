@@ -38,7 +38,7 @@ for:
 
     test_script:
       - git submodule update --init --recursive
-      - scripts/ci/bin/integration_test.sh
+      - scripts/integration_test.sh
 
     after_test:
       - rm -rf $HOME/.m2/repository/com/foldright/auto-pipeline*

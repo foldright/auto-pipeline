@@ -17,3 +17,6 @@ indent_size = 2
 
 [*.{md,mkd,markdown}]
 trim_trailing_whitespace = false
+
+[*.{sh,ps1}]
+indent_size = 4
