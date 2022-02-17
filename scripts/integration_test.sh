@@ -20,6 +20,12 @@ source bash-buddy/lib/prepare_jdks.sh
 
 source bash-buddy/lib/java_build_utils.sh
 
+# shellcheck disable=SC2034
+JVB_MVN_OPTS=(
+    "${JVB_DEFAULT_MVN_OPTS[@]}"
+    -DperformRelease -P'!gen-sign'
+)
+
 ################################################################################
 # ci build logic
 ################################################################################
@@ -35,7 +41,7 @@ prepare_jdks::switch_java_home_to_jdk "$default_build_jdk_version"
 
 cu::head_line_echo "build and test with Java: $JAVA_HOME"
 
-jvb::mvn_cmd -DperformRelease -P'!gen-sign' clean install
+jvb::mvn_cmd clean install
 (
     cd auto-pipeline-examples
     cu::log_then_run ./gradlew clean test
@@ -54,7 +60,7 @@ for jhome_var_name in "${JDK_HOME_VAR_NAMES[@]}"; do
     cu::head_line_echo "test with Java: $JAVA_HOME"
 
     # just test without build
-    jvb::mvn_cmd -DperformRelease -P'!gen-sign' surefire:test
+    jvb::mvn_cmd surefire:test
     (
         cd auto-pipeline-examples
         cu::log_then_run ./gradlew clean test
