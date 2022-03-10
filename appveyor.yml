@@ -40,9 +40,13 @@ for:
       - scripts/integration_test
 
     after_test:
+      # remove self maven install
       - rm -rf $HOME/.m2/repository/com/foldright/auto-pipeline*
+      # remove maven install file
       - rm -rf $HOME/.m2/wrapper/dists/*/*/*.zip
+      # remove gradle install file
       - rm -rf $HOME/.gradle/wrapper/dists/*/*/*.zip
+      # # remove sdkman install file
       - rm -rf $HOME/.sdkman/archives/*
 
     cache:
@@ -67,13 +71,16 @@ for:
     test_script:
       # test under java 11
       - set JAVA_HOME=C:\Program Files\Java\jdk11
-      - ./mvnw.cmd clean install -DperformRelease -P!gen-sign -V --no-transfer-progress
+      - ./mvnw.cmd -DperformRelease -P!gen-sign -V --no-transfer-progress clean install
       # test under java 8
       - set JAVA_HOME=C:\Program Files\Java\jdk1.8.0
-      - ./mvnw.cmd surefire:test -DperformRelease -P!gen-sign -V --no-transfer-progress
+      - ./mvnw.cmd -DperformRelease -P!gen-sign -V --no-transfer-progress surefire:test
 
     after_test:
+      # remove self maven install
       - ps: Remove-Item -r -fo $home\.m2\repository\com\foldright\auto-pipeline*
+      # remove maven install file
+      - ps: Remove-Item -Path $HOME\.m2\wrapper\dists\*\*\*.zip
 
     cache:
       # https://www.appveyor.com/docs/build-cache/
