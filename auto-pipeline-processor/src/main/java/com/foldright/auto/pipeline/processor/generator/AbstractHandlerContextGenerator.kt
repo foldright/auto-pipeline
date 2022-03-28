@@ -4,6 +4,7 @@ import com.foldright.auto.pipeline.PipelineDirection
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
+import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expandAndAdd
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
 import javax.lang.model.element.Modifier
@@ -44,8 +45,8 @@ class AbstractHandlerContextGenerator(private val desc: AutoPipelineClassDescrip
 
         val operationMethods = genPipelineOverrideMethods {
             when (TypeName.get(it.returnType)) {
-                TypeName.VOID -> """handler().${it.methodName}(${it.params.expand()}, ${nextOrPrevCtx(it)});"""
-                else -> """return handler().${it.methodName}(${it.params.expand()}, ${nextOrPrevCtx(it)});"""
+                TypeName.VOID -> """handler().${it.methodName}(${it.params.expandAndAdd(nextOrPrevCtx(it))});"""
+                else -> """return handler().${it.methodName}(${it.params.expandAndAdd(nextOrPrevCtx(it))});"""
             }.toCodeBlock()
         }
         abstractContextClassBuilder.addMethods(operationMethods)

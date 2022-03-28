@@ -122,8 +122,14 @@ class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement, 
     }
 
     companion object {
-        fun List<VariableElement>.expand() = this.joinToString(",") {
+        fun List<VariableElement>.expand() : CharSequence = this.joinToString(",") {
             it.simpleName
         }
+
+        fun List<VariableElement>.expandAndAdd(additional: CharSequence) : CharSequence = when {
+            this.isEmpty() -> additional
+            else -> "${this.expand()} , $additional"
+        }
+
     }
 }
