@@ -70,7 +70,7 @@
 
 		<!-- testing dependencies versions -->
 		<junit5.version>5.8.2</junit5.version>
-		<kotest.version>5.2.1</kotest.version>
+		<kotest.version>5.2.2</kotest.version>
 		<assertj.version>3.22.0</assertj.version>
 	</properties>
 
