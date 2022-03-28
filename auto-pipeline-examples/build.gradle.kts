@@ -28,7 +28,7 @@ dependencies {
      */
     testImplementation(kotlin("test"))
     // https://kotest.io/docs/quickstart
-    val kotestVersion = "5.2.1"
+    val kotestVersion = "5.2.2"
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-property-jvm:$kotestVersion")
