@@ -43,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<!--
-				annotation processor dependency should be "provided" scope!
+				annotation processor dependency should be "provided" scope.
 			-->
 			<groupId>com.foldright.auto-pipeline</groupId>
 			<artifactId>auto-pipeline-processor</artifactId>
