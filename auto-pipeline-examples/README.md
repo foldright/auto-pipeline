@@ -10,7 +10,6 @@ The examples project for `auto-pipline`. Including below examples:
     - [`Merger`](src/main/java/com/foldright/examples/merge/Merger.java)
     - [`IntervalMerger`](src/main/java/com/foldright/examples/merge/interval/IntervalMerger.java)
     - [`Reader`](src/main/java/com/foldright/examples/reader/Reader.java)
-    
 - usage of pipline implementation by test code:
     - [`ConfigSourceTest`](src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt)
     - [`RPC`](src/test/java/com/foldright/examples/duplexing/pipeline/RPCTest.kt)
@@ -18,8 +17,7 @@ The examples project for `auto-pipline`. Including below examples:
     - `LoadBalancerTest` WIP
     - `MergerTest` WIP
     - `IntervalMergerTest` WIP
-    - [`ReaderTest](src/test/java/com/foldright/examples/reader/pipeline/ReaderTest.kt)
-    
+    - [`ReaderTest`](src/test/java/com/foldright/examples/reader/pipeline/ReaderTest.kt)
 
 ## Run examples by `maven`
 

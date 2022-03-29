@@ -33,10 +33,10 @@ for `maven` project:
 ```xml
 <dependencies>
     <!--
-        the auto-pipeline annotation processor,
-          it will generate the pipeline classed for the interface.
-        the processor's scope should be provided
-          because we only need it at compile time.
+        the auto-pipeline annotation processor will generate
+          the pipeline classes for the interface.
+        annotation processor dependency should be "provided" scope,
+          because it's only needed at compile time.
     -->
     <dependency>
         <groupId>com.foldright.auto-pipeline</groupId>
@@ -53,11 +53,10 @@ for `gradle` project:
 /*
  * Gradle Kotlin DSL
  */
-// the auto-pipeline annotation you will use in your interface type
+// the auto-pipeline annotation will be used in your interface type
 compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.1.0")
-// the auto-pipeline annotation processor,
-// it will generate the pipeline classed for the interface.
-// use annotationProcessor scope because we only need it at annotation processing time.
+// the auto-pipeline annotation processor will generate the pipeline classes for the interface.
+// use "annotationProcessor" scope because it's only needed at annotation processing time.
 annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.1.0")
 
 /*
