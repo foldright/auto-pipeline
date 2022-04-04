@@ -61,7 +61,7 @@
 		<log4j2.version>2.17.2</log4j2.version>
 		<netty.version>4.1.75.Final</netty.version>
 
-		<kotlin.version>1.6.10</kotlin.version>
+		<kotlin.version>1.6.20</kotlin.version>
 		<!-- https://kotlinlang.org/docs/maven.html#specifying-compiler-options -->
 		<kotlin.compiler.apiVersion>1.5</kotlin.compiler.apiVersion>
 		<kotlin.compiler.jvmTarget>${maven.compiler.source}</kotlin.compiler.jvmTarget>
@@ -189,7 +189,7 @@
 			<dependency>
 				<groupId>com.github.tschuchortdev</groupId>
 				<artifactId>kotlin-compile-testing</artifactId>
-				<version>1.4.7</version>
+				<version>1.4.8</version>
 				<scope>test</scope>
 			</dependency>
 
@@ -359,7 +359,7 @@
 			<plugins>
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.1.0</version>
+					<version>3.2.0</version>
 				</plugin>
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
