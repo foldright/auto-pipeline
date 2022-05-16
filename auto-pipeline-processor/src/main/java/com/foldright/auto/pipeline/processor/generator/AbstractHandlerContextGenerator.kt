@@ -3,7 +3,6 @@ package com.foldright.auto.pipeline.processor.generator
 import com.foldright.auto.pipeline.PipelineDirection
 import com.foldright.auto.pipeline.processor.AutoPipelineClassDescriptor
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor
-import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expand
 import com.foldright.auto.pipeline.processor.AutoPipelineOperatorsDescriptor.Companion.expandAndAdd
 import com.squareup.javapoet.*
 import javax.annotation.processing.Filer
