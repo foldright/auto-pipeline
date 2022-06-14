@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.6.21"
+    val kotlinVersion = "1.7.0"
     kotlin("jvm") version kotlinVersion
 }
 
@@ -28,7 +28,7 @@ dependencies {
      */
     testImplementation(kotlin("test"))
     // https://kotest.io/docs/quickstart
-    val kotestVersion = "5.3.0"
+    val kotestVersion = "5.3.1"
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-property-jvm:$kotestVersion")
