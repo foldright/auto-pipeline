@@ -189,7 +189,7 @@
 			<dependency>
 				<groupId>com.github.tschuchortdev</groupId>
 				<artifactId>kotlin-compile-testing</artifactId>
-				<version>1.4.8</version>
+				<version>1.4.9</version>
 				<scope>test</scope>
 			</dependency>
 
