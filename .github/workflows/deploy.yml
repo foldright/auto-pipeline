@@ -3,12 +3,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - docs/**
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v3
       with:
         fetch-depth: 0
     - name: Install mdbook
