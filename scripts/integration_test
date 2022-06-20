@@ -42,7 +42,7 @@ prepare_jdks::switch_to_jdk "$default_build_jdk_version"
 
 cu::head_line_echo "build and test with Java: $JAVA_HOME"
 
-jvb::mvn_cmd clean install
+jvb::mvn_cmd -Pgen-code-cov '-P!gen-sign' -DperformRelease clean install
 (
     cd auto-pipeline-examples
     cu::log_then_run ./gradlew clean test
