@@ -1,4 +1,4 @@
-name: Java CI
+name: CI
 
 on:
   push:
@@ -16,10 +16,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-18.04 ]
-        java: [ 8, 11, 17 ]
+        os: [ ubuntu-20.04, windows-2022 ]
+        java: [ 8, 11, 17, 18 ]
       fail-fast: false
-      max-parallel: 16
+      max-parallel: 32
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
 
     steps:
@@ -31,9 +31,9 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: 'maven'
       - name: Test with Maven
-        run: ./mvnw clean test
+        run: ./mvnw -V --no-transfer-progress -Pgen-code-cov '-P!gen-sign' -DperformRelease clean package
       - name: Upload coverage to Codecov
-      # https://github.com/marketplace/actions/codecov
+        # https://github.com/marketplace/actions/codecov
         uses: codecov/codecov-action@v3
         with:
           name: codecov-umbrella

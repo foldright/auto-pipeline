@@ -1,8 +1,9 @@
 # <div align="center"><a href="#"><img src="docs/logo-green.png" alt="auto-pipeline 🚀"></a></div>
 
 <p align="center">
-<a href="https://ci.appveyor.com/project/oldratlee/auto-pipeline"><img src="https://img.shields.io/appveyor/ci/oldratlee/auto-pipeline/main?logo=appveyor&logoColor=white" alt="Build Status"></a>
-<a href="https://codecov.io/gh/foldright/auto-pipeline"><img src="https://codecov.io/gh/foldright/auto-pipeline/branch/main/graph/badge.svg?token=3MOZSV0IK6"/></a>
+<a href="https://github.com/foldright/auto-pipeline/actions/workflows/ci.yml"><img src="https://img.shields.io/github/workflow/status/foldright/auto-pipeline/CI/main?logo=github&logoColor=white" alt="Github Workflow Build Status"></a>
+<a href="https://ci.appveyor.com/project/oldratlee/auto-pipeline"><img src="https://img.shields.io/appveyor/ci/oldratlee/auto-pipeline/main?logo=appveyor&logoColor=white" alt="Appveyor Build Status"></a>
+<a href="https://codecov.io/gh/foldright/auto-pipeline"><img src="https://img.shields.io/codecov/c/github/foldright/auto-pipeline/main?logo=codecov&logoColor=white" alt="Coverage Status"></a>
 <a href="https://openjdk.java.net/"><img src="https://img.shields.io/badge/Java-8+-green?logo=java&logoColor=white" alt="Java support"></a>
 <a href="https://www.apache.org/licenses/LICENSE-2.0.html"><img src="https://img.shields.io/github/license/foldright/auto-pipeline?color=4D7A97&logo=apache" alt="License"></a>
 <a href="https://search.maven.org/search?q=g:com.foldright.auto-pipeline"><img src="https://img.shields.io/maven-central/v/com.foldright.auto-pipeline/auto-pipeline-annotations?logo=apache-maven" alt="Maven Central"></a>
