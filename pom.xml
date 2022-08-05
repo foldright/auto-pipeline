@@ -56,6 +56,8 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- overridden by submodule that need skip deploy -->
+		<maven.deploy.skip>true</maven.deploy.skip>
 
 		<slf4j.version>1.7.36</slf4j.version>
 		<log4j2.version>2.18.0</log4j2.version>
@@ -310,50 +312,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<!-- In multi-module builds using the deploy-at-end feature,
-					 the deployment of all components is performed in the last module based on the reactor order.
-					 If this property is set to true in the last module,
-					 all staging deployment for all modules will be skipped.
-					 so, we'll config nexus deploy after every moudle's deploy phase
-				-->
-				<!-- see: https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin#configuring-the-plugin -->
-				<executions>
-					<execution>
-						<id>default-deploy</id>
-						<phase>deploy</phase>
-						<goals>
-							<goal>deploy</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
-			<plugin>
-				<!--
-					config example: https://github.com/mojohaus/versions-maven-plugin/issues/157#issuecomment-306041074
-				-->
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>versions-maven-plugin</artifactId>
-				<configuration>
-					<!--
-						$maven.multiModuleProjectDirectory
-						Finding the root directory of a multi module maven reactor project - Stack Overflow
-						https://stackoverflow.com/questions/3084629
-					-->
-					<rulesUri>
-						file://${maven.multiModuleProjectDirectory}/auto-pipeline-processor/src/versions-rules.xml
-					</rulesUri>
-					<generateBackupPoms>false</generateBackupPoms>
-				</configuration>
-			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -417,11 +375,6 @@
 					<version>3.1.0</version>
 				</plugin>
 				<plugin>
-					<groupId>org.codehaus.mojo</groupId>
-					<artifactId>versions-maven-plugin</artifactId>
-					<version>2.11.0</version>
-				</plugin>
-				<plugin>
 					<groupId>pl.project13.maven</groupId>
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>4.9.10</version>
@@ -430,6 +383,25 @@
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
 					<version>1.6.13</version>
+				</plugin>
+				<plugin>
+					<!--
+						config example: https://github.com/mojohaus/versions-maven-plugin/issues/157#issuecomment-306041074
+					-->
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.11.0</version>
+					<configuration>
+						<!--
+							$maven.multiModuleProjectDirectory
+							Finding the root directory of a multi module maven reactor project - Stack Overflow
+							https://stackoverflow.com/questions/3084629
+						-->
+						<rulesUri>
+							file://${maven.multiModuleProjectDirectory}/auto-pipeline-processor/src/versions-rules.xml
+						</rulesUri>
+						<generateBackupPoms>false</generateBackupPoms>
+					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -446,7 +418,7 @@
 			</properties>
 		</profile>
 		<profile>
-			<id>gen-src</id>
+			<id>gen-java-src</id>
 			<activation>
 				<property>
 					<name>performRelease</name>
@@ -650,6 +622,54 @@
 								</configuration>
 							</execution>
 						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>deploy-settings</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<!-- In multi-module builds using the deploy-at-end feature,
+							 the deployment of all components is performed in the last module based on the reactor order.
+							 If this property is set to true in the last module,
+							 all staging deployment for all modules will be skipped.
+							 so, we'll config nexus deploy after every moudle's deploy phase
+						-->
+						<!-- see: https://github.com/sonatype/nexus-maven-plugins/tree/master/staging/maven-plugin#configuring-the-plugin -->
+						<executions>
+							<execution>
+								<id>default-deploy</id>
+								<phase>deploy</phase>
+								<goals>
+									<goal>deploy</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>false</autoReleaseAfterClose>
+							<!--
+								If you are deploying to Maven Central, it is the Nexus Staging Plugin that is
+								doing the deployment instead of the Deploy plugin,
+								so the configuration of the deploy plugin has no effect.
+								To make the Nexus deploy plugin skip, set skipNexusStagingDeployMojo
+								in its configuration to true.
+								-->
+							<!-- see: https://stackoverflow.com/questions/59552549/preventing-maven-modules-from-being-deployed -->
+							<skipNexusStagingDeployMojo>${maven.deploy.skip}</skipNexusStagingDeployMojo>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
