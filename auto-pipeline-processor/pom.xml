@@ -66,7 +66,7 @@
 
 	<profiles>
 		<profile>
-			<id>gen-doc</id>
+			<id>gen-javadoc</id>
 			<!--
 			Profiles are not inherited from parent pom
 			see: https://stackoverflow.com/questions/46681281/maven-active-by-default-profile-in-parent-does-not-propagate-to-children

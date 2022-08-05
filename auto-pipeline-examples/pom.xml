@@ -51,24 +51,4 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<!--
-				If you are deploying to Maven Central, it is the Nexus Staging Plugin that is
-				doing the deployment instead of the Deploy plugin,
-				so the configuration of the deploy plugin has no effect.
-				To make the Nexus deploy plugin skip, set skipNexusStagingDeployMojo
-				in its configuration to true.
-				-->
-				<!-- see: https://stackoverflow.com/questions/59552549/preventing-maven-modules-from-being-deployed -->
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<configuration>
-					<skipNexusStagingDeployMojo>true</skipNexusStagingDeployMojo>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
 </project>
