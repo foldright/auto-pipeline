@@ -43,7 +43,7 @@ for `maven` project:
     <dependency>
         <groupId>com.foldright.auto-pipeline</groupId>
         <artifactId>auto-pipeline-processor</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
