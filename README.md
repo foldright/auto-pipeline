@@ -20,6 +20,8 @@
 `auto-pipeline` is an [`annotation-processor`](https://docs.oracle.com/javase/8/docs/api/javax/annotation/processing/package-summary.html) for `Pipeline` generation, which is inspired by
 Google's [`Auto`](https://github.com/google/auto). ❤️
 
+for more information, please check out the [auto-pipeline documents](https://foldright.io/auto-pipeline/). 
+
 ## quick examples
 
 below is a brief introduction. please check the [examples project](auto-pipeline-examples), and it's test cases for details.
