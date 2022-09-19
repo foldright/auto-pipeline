@@ -39,7 +39,7 @@ dependencies {
     val kotlinVersion = project.getKotlinPluginVersion()
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
     implementation(platform("org.junit:junit-bom:5.9.0"))
-    implementation(platform("org.apache.logging.log4j:log4j-bom:2.18.0"))
+    implementation(platform("org.apache.logging.log4j:log4j-bom:2.19.0"))
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
