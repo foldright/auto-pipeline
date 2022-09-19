@@ -59,7 +59,7 @@
 		<!-- overridden by submodule that need skip deploy -->
 		<maven.deploy.skip>true</maven.deploy.skip>
 
-		<slf4j.version>1.7.36</slf4j.version>
+		<slf4j.version>2.0.1</slf4j.version>
 		<log4j2.version>2.19.0</log4j2.version>
 		<netty.version>4.1.82.Final</netty.version>
 
