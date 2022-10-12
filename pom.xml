@@ -61,7 +61,7 @@
 
 		<slf4j.version>1.7.36</slf4j.version>
 		<log4j2.version>2.19.0</log4j2.version>
-		<netty.version>4.1.82.Final</netty.version>
+		<netty.version>4.1.84.Final</netty.version>
 
 		<kotlin.version>1.7.10</kotlin.version>
 		<!-- https://kotlinlang.org/docs/maven.html#specifying-compiler-options -->
