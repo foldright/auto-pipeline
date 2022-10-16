@@ -19,9 +19,8 @@ branches:
     - gh-pages
 
 environment:
-  APPVEYOR_YML_DISABLE_PS_LINUX: true
-  MAVEN_OPTS: "-Xmx768m -Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2"
-  JAVA_OPTS: "-Xmx768m"
+  MAVEN_OPTS: "-Xmx1g"
+  JAVA_OPTS: "-Xmx1g"
 
 install:
   - git submodule update --init
@@ -29,14 +28,15 @@ test_script:
   - scripts/integration_test
 
 after_test:
-  # remove self maven install
+  # remove self maven install files
   - rm -rf $HOME/.m2/repository/com/foldright/auto-pipeline*
-  # remove maven install file
+  # remove maven install files
   - rm -rf $HOME/.m2/wrapper/dists/*/*/*.zip
-  # remove gradle install file
+  # remove gradle install files
   - rm -rf $HOME/.gradle/wrapper/dists/*/*/*.zip
-  # # remove sdkman install file
+  # remove sdkman install files
   - rm -rf $HOME/.sdkman/archives/*
+  - rm -rf $HOME/.sdkman/tmp/*
 
 cache:
   # if cache size is exceed appveyor limit:
