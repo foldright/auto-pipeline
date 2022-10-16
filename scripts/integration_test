@@ -13,9 +13,10 @@ readonly default_build_jdk_version=11
 
 # shellcheck disable=SC2034
 readonly PREPARE_JDKS_INSTALL_BY_SDKMAN=(
-    8
-    "$default_build_jdk_version"
-    17
+  8
+  "$default_build_jdk_version"
+  17
+  19
 )
 
 source bash-buddy/lib/prepare_jdks.sh
@@ -24,8 +25,8 @@ source bash-buddy/lib/java_build_utils.sh
 
 # shellcheck disable=SC2034
 JVB_MVN_OPTS=(
-    "${JVB_DEFAULT_MVN_OPTS[@]}"
-    -DperformRelease -P'!gen-sign'
+  "${JVB_DEFAULT_MVN_OPTS[@]}"
+  -DperformRelease -P'!gen-sign'
 )
 
 ################################################################################
@@ -43,26 +44,23 @@ prepare_jdks::switch_to_jdk "$default_build_jdk_version"
 cu::head_line_echo "build and test with Java: $JAVA_HOME"
 
 jvb::mvn_cmd -Pgen-code-cov '-P!gen-sign' -DperformRelease clean install
-(
-    cd auto-pipeline-examples
-    cu::log_then_run ./gradlew clean test
-)
 
 ########################################
 # test multi-version java
 ########################################
 for jdk in "${PREPARE_JDKS_INSTALL_BY_SDKMAN[@]}"; do
-    # already tested by above `mvn install`
-    [ "$default_build_jdk_version" = "$jdk" ] && continue
+  prepare_jdks::switch_to_jdk "$jdk"
 
-    prepare_jdks::switch_to_jdk "$jdk"
+  cu::head_line_echo "test with Java: $JAVA_HOME"
 
-    cu::head_line_echo "test with Java: $JAVA_HOME"
-
-    # just test without build
+  # just test without build
+  # default build jdk version already tested by above `mvn install`
+  if [ "$default_build_jdk_version" != "$jdk" ]; then
     jvb::mvn_cmd surefire:test
-    (
-        cd auto-pipeline-examples
-        cu::log_then_run ./gradlew clean test
-    )
+  fi
+
+  (
+    cd auto-pipeline-examples
+    cu::log_then_run ./gradlew clean test
+  )
 done
