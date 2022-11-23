@@ -59,8 +59,10 @@
 		<!-- overridden by submodule that need skip deploy -->
 		<maven.deploy.skip>false</maven.deploy.skip>
 
-		<slf4j.version>1.7.36</slf4j.version>
+		<slf4j.version>2.0.4</slf4j.version>
 		<log4j2.version>2.19.0</log4j2.version>
+		<log4j2.slf4j.impl.aid>log4j-slf4j2-impl</log4j2.slf4j.impl.aid>
+
 		<netty.version>4.1.85.Final</netty.version>
 
 		<kotlin.version>1.7.10</kotlin.version>
@@ -97,7 +99,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
+			<artifactId>${log4j2.slf4j.impl.aid}</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<!-- QA libs -->
@@ -415,6 +417,13 @@
 			</activation>
 			<properties>
 				<maven.compiler.release>8</maven.compiler.release>
+			</properties>
+		</profile>
+		<profile>
+			<id>enable-slf4j-v1</id>
+			<properties>
+				<log4j2.slf4j.impl.aid>log4j-slf4j-impl</log4j2.slf4j.impl.aid>
+				<slf4j.version>1.7.36</slf4j.version>
 			</properties>
 		</profile>
 		<profile>
