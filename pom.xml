@@ -57,7 +57,7 @@
 		<maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<!-- overridden by submodule that need skip deploy -->
-		<maven.deploy.skip>true</maven.deploy.skip>
+		<maven.deploy.skip>false</maven.deploy.skip>
 
 		<slf4j.version>1.7.36</slf4j.version>
 		<log4j2.version>2.19.0</log4j2.version>
