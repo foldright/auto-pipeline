@@ -45,7 +45,11 @@ dependencies {
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 java.targetCompatibility = JavaVersion.VERSION_1_8
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<JavaCompile> {
+    options.compilerArgs.add("-Xlint:unchecked")
+}
+
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = java.sourceCompatibility.toString()
 }
 
