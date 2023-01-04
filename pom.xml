@@ -313,6 +313,11 @@
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<compilerArgs>
+						<arg>-Xlint:unchecked</arg>
+					</compilerArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -571,14 +576,16 @@
 			<build>
 				<plugins>
 					<plugin>
-						<!-- for codecov.io -->
-						<!-- config example: https://github.com/codecov/example-java -->
-						<!-- plugin docs: https://eclemma.org/jacoco/trunk/doc/ -->
+						<!--
+							Code Coverage
+							config example: https://github.com/codecov/example-java
+							plugin docs: https://eclemma.org/jacoco/trunk/doc/
+						-->
 						<groupId>org.jacoco</groupId>
 						<artifactId>jacoco-maven-plugin</artifactId>
 						<executions>
 							<execution>
-						<id>prepare-agent</id>
+								<id>prepare-agent</id>
 								<goals>
 									<goal>prepare-agent</goal>
 								</goals>
