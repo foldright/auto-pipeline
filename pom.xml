@@ -484,7 +484,6 @@
 							<doclint>all,-missing</doclint>
 							<!-- https://maven.apache.org/plugins/maven-javadoc-plugin/examples/exclude-package-names.html -->
 							<excludePackageNames>*.internal.*</excludePackageNames>
-							<overview>src/api/overview.html</overview>
 							<additionalJOptions>
 								<additionalJOption>-quiet</additionalJOption>
 								<additionalJOption>-J-Duser.language=en</additionalJOption>
