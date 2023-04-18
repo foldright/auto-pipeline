@@ -14,7 +14,7 @@ import io.kotest.matchers.types.shouldBeTypeOf
 
 class ChannelTest : AnnotationSpec() {
 
-    lateinit var pipeline: ChannelPipeline
+    private lateinit var pipeline: ChannelPipeline
 
     @Test
     fun testNoneHandler() {

@@ -8,7 +8,7 @@ import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.matchers.shouldBe
 
 class RPCTest : AnnotationSpec() {
-    lateinit var pipeline: RPC
+    private lateinit var pipeline: RPC
 
 
     @Test
