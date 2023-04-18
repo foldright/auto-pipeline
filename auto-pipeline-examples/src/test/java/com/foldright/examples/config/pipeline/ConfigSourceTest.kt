@@ -11,7 +11,7 @@ import io.kotest.matchers.shouldBe
 private const val NOT_EXISTED = "not_existed_key"
 
 class ConfigSourceTest : AnnotationSpec() {
-    lateinit var pipeline: ConfigSource
+    private lateinit var pipeline: ConfigSource
 
     @AfterEach
     fun afterEach() {
