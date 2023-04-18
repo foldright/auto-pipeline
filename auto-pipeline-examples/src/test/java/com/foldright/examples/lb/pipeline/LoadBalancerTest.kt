@@ -15,7 +15,7 @@ class LoadBalancerTest : AnnotationSpec() {
         override fun available(): Boolean = available
     }
 
-    lateinit var pipeline: LoadBalancer
+    private lateinit var pipeline: LoadBalancer
 
     @Test
     fun testDefaultHandler() {
