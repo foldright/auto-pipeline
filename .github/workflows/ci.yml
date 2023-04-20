@@ -1,5 +1,4 @@
-name: CI
-
+name: Fast CI
 on:
   push:
     # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-excluding-paths
@@ -10,15 +9,16 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 10
+    timeout-minutes: 5
     strategy:
       matrix:
         os: [ ubuntu-20.04, windows-2022 ]
-        java: [ 8, 11, 17, 19, 20-ea ]
+        java: [ 8, 20 ]
       fail-fast: false
       max-parallel: 32
     name: Test JDK ${{ matrix.java }}, ${{ matrix.os }}
@@ -31,12 +31,4 @@ jobs:
           java-version: ${{ matrix.java }}
           cache: maven
       - name: Test with build
-        run: ./mvnw -V --no-transfer-progress -D performRelease -P'!gen-sign' clean install
-      - name: Test without build for slf4j v1
-        run: ./mvnw -V --no-transfer-progress -P gen-code-cov -P enable-slf4j-v1 dependency:tree surefire:test
-      - name: Upload coverage to Codecov
-        # https://github.com/marketplace/actions/codecov
-        uses: codecov/codecov-action@v3
-        with:
-          name: codecov-umbrella
-          token: ${{ secrets.CODECOV_TOKEN }}
+        run: ./mvnw -V --no-transfer-progress clean package
