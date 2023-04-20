@@ -1,8 +1,8 @@
-# <div align="center"><a href="#"><img src="docs/logo-green.png" alt="auto-pipeline 🚀"></a></div>
+# <div align="center"><a href="#"><img src="https://user-images.githubusercontent.com/1063891/233436006-857e06d6-90d1-42fa-ac5a-e953b80526de.png" alt="auto-pipeline 🚀"></a></div>
 
 <p align="center">
-<a href="https://github.com/foldright/auto-pipeline/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/foldright/auto-pipeline/ci.yml?branch=main&logo=github&logoColor=white" alt="Github Workflow Build Status"></a>
-<a href="https://ci.appveyor.com/project/oldratlee/auto-pipeline"><img src="https://img.shields.io/appveyor/ci/oldratlee/auto-pipeline/main?logo=appveyor&logoColor=white" alt="Appveyor Build Status"></a>
+<a href="https://github.com/foldright/auto-pipeline/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/foldright/auto-pipeline/ci.yml?branch=main&logo=github&logoColor=white&label=fast ci" alt="Github Workflow Build Status"></a>
+<a href="https://github.com/foldright/auto-pipeline/actions/workflows/strong-ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/foldright/auto-pipeline/strong-ci.yml?branch=main&logo=github&logoColor=white&label=strong ci" alt="Github Workflow Build Status"></a>
 <a href="https://codecov.io/gh/foldright/auto-pipeline"><img src="https://img.shields.io/codecov/c/github/foldright/auto-pipeline/main?logo=codecov&logoColor=white" alt="Coverage Status"></a>
 <a href="https://openjdk.java.net/"><img src="https://img.shields.io/badge/Java-8+-green?logo=openjdk&logoColor=white" alt="Java support"></a>
 <a href="https://www.apache.org/licenses/LICENSE-2.0.html"><img src="https://img.shields.io/github/license/foldright/auto-pipeline?color=4D7A97&logo=apache" alt="License"></a>
