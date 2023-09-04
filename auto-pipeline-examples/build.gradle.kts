@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.getKotlinPluginVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    val kotlinVersion = "1.9.10"
+    val kotlinVersion = "1.9.20"
     kotlin("jvm") version kotlinVersion
 }
 
@@ -28,7 +28,7 @@ dependencies {
      */
     testImplementation(kotlin("test"))
     // https://kotest.io/docs/quickstart
-    val kotestVersion = "5.6.2"
+    val kotestVersion = "5.8.0"
     testImplementation("io.kotest:kotest-runner-junit5-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-property-jvm:$kotestVersion")
@@ -38,8 +38,8 @@ dependencies {
      */
     val kotlinVersion = project.getKotlinPluginVersion()
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
-    implementation(platform("org.junit:junit-bom:5.10.0"))
-    implementation(platform("org.apache.logging.log4j:log4j-bom:2.20.0"))
+    implementation(platform("org.junit:junit-bom:5.10.1"))
+    implementation(platform("org.apache.logging.log4j:log4j-bom:2.21.1"))
 }
 
 java.sourceCompatibility = JavaVersion.VERSION_1_8
