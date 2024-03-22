@@ -63,7 +63,7 @@
 		<log4j2.version>2.23.1</log4j2.version>
 		<log4j2.slf4j.impl.aid>log4j-slf4j2-impl</log4j2.slf4j.impl.aid>
 
-		<netty.version>4.1.106.Final</netty.version>
+		<netty.version>4.1.108.Final</netty.version>
 
 		<kotlin.version>1.9.23</kotlin.version>
 		<!-- https://kotlinlang.org/docs/maven.html#specifying-compiler-options -->
