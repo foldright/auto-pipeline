@@ -101,7 +101,7 @@ class AutoPipelineClassDescriptor(
 
     val entityMethods = elements.getAllMembers(entityElement)
         .filterNotNull()
-        .filterIsInstance(ExecutableElement::class.java)
+        .filterIsInstance<ExecutableElement>()
         .filter {
             it.kind == ElementKind.METHOD && it.modifiers.contains(PUBLIC) && it.modifiers.contains(ABSTRACT)
         }

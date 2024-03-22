@@ -12,13 +12,13 @@ import javax.lang.model.type.TypeVariable
 abstract class AbstractGenerator(private val desc: AutoPipelineClassDescriptor) {
 
     companion object {
-        private const val indent: String = "    "
+        private const val INDENT: String = "    "
     }
 
     protected fun javaFileBuilder(packageName: String, typeSpec: TypeSpec): JavaFile.Builder =
         JavaFile.builder(packageName, typeSpec)
             .skipJavaLangImports(true)
-            .indent(indent)
+            .indent(INDENT)
 
 
     protected fun genPipelineOverrideMethods(statement: (AutoPipelineOperatorsDescriptor) -> CodeBlock): List<MethodSpec> =
