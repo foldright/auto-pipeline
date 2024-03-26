@@ -20,7 +20,7 @@ to [find the latest version](https://search.maven.org/search?q=g:com.foldright.a
     <dependency>
         <groupId>com.foldright.auto-pipeline</groupId>
         <artifactId>auto-pipeline-processor</artifactId>
-        <version>0.2.0</version>
+        <version>0.3.0</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
@@ -33,16 +33,16 @@ for `gradle` project:
  * Gradle Kotlin DSL
  */
 // the auto-pipeline annotation will be used in your interface type
-compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.2.0")
+compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.3.0")
 // the auto-pipeline annotation processor will generate the pipeline classes for the interface.
 // use "annotationProcessor" scope because it's only needed at annotation processing time.
-annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.2.0")
+annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0")
 
 /*
  * Gradle Groovy DSL
  */
-compileOnly 'com.foldright.auto-pipeline:auto-pipeline-annotations:0.2.0'
-annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.2.0'
+compileOnly 'com.foldright.auto-pipeline:auto-pipeline-annotations:0.3.0'
+annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0'
 ```
 
 ## 1. using `@AutoPipeline` to auto generate pipeline for your interface
