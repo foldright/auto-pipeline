@@ -65,9 +65,9 @@
 
 		<netty.version>4.1.106.Final</netty.version>
 
-		<kotlin.version>1.8.10</kotlin.version>
+		<kotlin.version>1.9.23</kotlin.version>
 		<!-- https://kotlinlang.org/docs/maven.html#specifying-compiler-options -->
-		<kotlin.compiler.apiVersion>1.5</kotlin.compiler.apiVersion>
+		<kotlin.compiler.apiVersion>1.9</kotlin.compiler.apiVersion>
 		<kotlin.compiler.jvmTarget>${maven.compiler.source}</kotlin.compiler.jvmTarget>
 		<dokka.version>1.9.20</dokka.version>
 		<dokka.link.jdk.version>8</dokka.link.jdk.version>
@@ -189,11 +189,11 @@
 				<artifactId>freemarker</artifactId>
 				<version>2.3.32</version>
 			</dependency>
-			<!-- https://github.com/tschuchortdev/kotlin-compile-testing -->
+			<!-- https://github.com/ZacSweers/kotlin-compile-testing -->
 			<dependency>
-				<groupId>com.github.tschuchortdev</groupId>
-				<artifactId>kotlin-compile-testing</artifactId>
-				<version>1.5.0</version>
+				<groupId>dev.zacsweers.kctfork</groupId>
+				<artifactId>core</artifactId>
+				<version>0.4.1</version>
 				<scope>test</scope>
 			</dependency>
 

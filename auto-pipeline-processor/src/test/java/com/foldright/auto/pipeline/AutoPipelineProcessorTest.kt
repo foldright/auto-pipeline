@@ -7,12 +7,14 @@ import io.kotest.core.spec.style.AnnotationSpec
 import io.kotest.engine.spec.tempdir
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import org.jetbrains.kotlin.konan.file.File
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
+import java.io.File
 
 /**
- * [`kotlin-compile-testing` usage](https://github.com/tschuchortdev/kotlin-compile-testing)
+ * [`kotlin-compile-testing` usage](https://github.com/ZacSweers/kotlin-compile-testing)
  */
 class AutoPipelineProcessorTest : AnnotationSpec() {
+    @OptIn(ExperimentalCompilerApi::class)
     @Test
     fun test_AutoPipelineProcessor() {
         val compileResult = KotlinCompilation().apply {
