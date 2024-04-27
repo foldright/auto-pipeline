@@ -2,7 +2,6 @@ package com.foldright.examples.duplexing;
 
 import com.foldright.auto.pipeline.AutoPipeline;
 import com.foldright.auto.pipeline.PipelineDirection;
-import com.foldright.examples.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,7 +13,7 @@ import static com.foldright.auto.pipeline.PipelineDirection.Direction.REVERSE;
 public interface RPC {
 
 
-    Response request(Request request, Component c);
+    Response request(Request request);
 
     @PipelineDirection(REVERSE)
     void onResponse(Response response);

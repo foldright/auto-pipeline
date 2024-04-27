@@ -17,7 +17,6 @@ import javax.lang.model.util.Types
 
 class AutoPipelineClassDescriptor(
     elements: Elements,
-    private val types: Types,
     private val entityElement: TypeElement
 ) {
     // entity description
