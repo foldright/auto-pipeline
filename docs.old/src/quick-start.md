@@ -79,7 +79,7 @@ public interface ConfigSource {
 - `AbstractConfigSourceHandlerContext`
 - `DefaultConfigSourceHandlerContext`
 
-## 2. implementing your handler for pipeline
+## Implementing your handler for pipeline
 
 we can implement `MapConfigSourceHandler` and `SystemConfigSourceHandler` (they are all in the [ConfigSource handler example](https://github.com/foldright/auto-pipeline/blob/main/auto-pipeline-examples/src/main/java/com/foldright/examples/config/handler)):
 
@@ -144,4 +144,5 @@ pipeline.get("java.specification.version")
 // from system properties / SystemConfigSourceHandler
 ```
 
-check the runnable [test case](https://github.com/foldright/auto-pipeline/blob/main/auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt) for details.
+## What's next:
+
