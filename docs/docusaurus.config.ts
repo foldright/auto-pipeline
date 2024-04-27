@@ -4,7 +4,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
   title: 'Auto Pipeline',
-  tagline: "auto generate your component's pipeline code. keep your project smaller, simpler, and more extensible.💡",
+  tagline: "Pipeline pattern have never been easier 🚀",
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -12,7 +12,7 @@ const config: Config = {
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/auto-pipeline/',
-  
+
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
@@ -72,7 +72,8 @@ const config: Config = {
           position: 'left',
           label: 'Tutorial',
         },
-        {to: '/blog', label: 'Blog', position: 'left'},
+        {to: '/docs/tutorial-basics/quick-start', label: 'Quick Start', position: 'left'},
+        {to: '/docs/tutorial-basics/examples', label: 'Examples', position: 'left'},
         {
           href: 'https://github.com/foldright/auto-pipeline',
           label: 'GitHub',
@@ -133,7 +134,8 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   customFields: {
-
+    //tagline2: "Keep your project smaller, simpler, and more extensible.💡",
+    tagline2: "auto generate your component's pipeline code 😁",
   },
 };
 

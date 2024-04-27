@@ -16,12 +16,15 @@ function HomepageHeader() {
                 {siteConfig.title}
             </Heading>
             <img src="img/logo.svg" alt="autopipeline Logo" className={styles.logo} style={{maxWidth: '20vh'}}/>
-            <p className="hero__subtitle">{siteConfig.tagline}</p>
+            <p className="hero__subtitle">
+                {siteConfig.tagline} <br/>
+                {siteConfig.customFields.tagline2 as string}
+            </p>
             <div className={styles.buttons}>
                 <Link
                     className="button button--secondary button--lg"
                     to="/docs/intro">
-                    AutoPipeline Tutorial - 2min ⏱️
+                    Quick Start - 5min ⏱️
                 </Link>
             </div>
         </div>

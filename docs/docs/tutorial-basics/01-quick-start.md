@@ -175,3 +175,4 @@ That's all, the `@AutoPipeline` help you generate the Pipeline Design Pattern Co
 
 ## What's next?
 - check the runnable [test case](https://github.com/foldright/auto-pipeline/blob/main/auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt) for details.
+- check out the [example project](https://github.com/foldright/auto-pipeline/tree/main/auto-pipeline-examples/src/main/java/com/foldright/examples)
