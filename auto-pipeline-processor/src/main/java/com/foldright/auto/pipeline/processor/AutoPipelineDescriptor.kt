@@ -1,10 +1,8 @@
 package com.foldright.auto.pipeline.processor
 
+import com.foldright.auto.pipeline.AutoPipeline
 import com.foldright.auto.pipeline.PipelineDirection
-import com.squareup.javapoet.ClassName
-import com.squareup.javapoet.ParameterizedTypeName
-import com.squareup.javapoet.TypeName
-import com.squareup.javapoet.TypeVariableName
+import com.squareup.javapoet.*
 import javax.lang.model.element.ElementKind
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier.ABSTRACT
@@ -24,6 +22,7 @@ class AutoPipelineClassDescriptor(
     private val entityPackage = elements.getPackageOf(entityElement).toString()
     private val entitySimpleName = entityElement.simpleName.toString()
     val entityType: TypeName = TypeName.get(entityElement.asType())
+
     val entityDeclaredTypeVariables: List<TypeVariableName> by lazy {
         if (entityType is ParameterizedTypeName) {
             entityElement.typeParameters.map { TypeVariableName.get(it) }
@@ -32,6 +31,18 @@ class AutoPipelineClassDescriptor(
         }
     }
 
+    private val entityAnnotations: List<AnnotationSpec> by lazy {
+        entityElement.annotationMirrors
+            .map { AnnotationSpec.get(it) }
+            .filterNot {
+                val tp = it.type
+                if (tp is ClassName) {
+                    tp.canonicalName() == AutoPipeline::class.java.canonicalName
+                } else {
+                    false
+                }
+            }
+    }
 
     // new package for all pipeline source code
     private val newPackageName = "${entityPackage}.pipeline"
@@ -108,25 +119,28 @@ class AutoPipelineClassDescriptor(
         .map { AutoPipelineOperatorsDescriptor(it, entityElement) }
 }
 
-class AutoPipelineOperatorsDescriptor(val executableElement: ExecutableElement, private val entityElement: TypeElement) {
+class AutoPipelineOperatorsDescriptor(
+    val executableElement: ExecutableElement,
+    private val entityElement: TypeElement
+) {
     val methodName = executableElement.simpleName.toString()
     val returnType: TypeMirror = executableElement.returnType
     val params: List<VariableElement> = executableElement.parameters
 
-    private val defaultDirection : PipelineDirection.Direction by lazy {
+    private val defaultDirection: PipelineDirection.Direction by lazy {
         entityElement.getAnnotation(PipelineDirection::class.java)?.value ?: PipelineDirection.Direction.FORWARD
     }
 
-    val direction : PipelineDirection.Direction by lazy {
+    val direction: PipelineDirection.Direction by lazy {
         executableElement.getAnnotation(PipelineDirection::class.java)?.value ?: defaultDirection
     }
 
     companion object {
-        fun List<VariableElement>.expand() : CharSequence = this.joinToString(",") {
+        fun List<VariableElement>.expand(): CharSequence = this.joinToString(",") {
             it.simpleName
         }
 
-        fun List<VariableElement>.expandAndAdd(additional: CharSequence) : CharSequence = when {
+        fun List<VariableElement>.expandAndAdd(additional: CharSequence): CharSequence = when {
             this.isEmpty() -> additional
             else -> "${this.expand()} , $additional"
         }
