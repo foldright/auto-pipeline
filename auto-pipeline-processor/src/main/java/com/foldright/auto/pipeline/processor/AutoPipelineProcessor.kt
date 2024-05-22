@@ -52,7 +52,7 @@ class AutoPipelineProcessor : AbstractProcessor() {
     }
 
     private fun doProcess(element: TypeElement) {
-        val classDescriptor = AutoPipelineClassDescriptor(elements, types, element)
+        val classDescriptor = AutoPipelineClassDescriptor(elements, element)
         val generator = SourceGeneratorFacade(classDescriptor, filer)
 
         generator.genSourceCode()
