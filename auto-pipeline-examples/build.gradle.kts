@@ -38,7 +38,7 @@ dependencies {
      */
     val kotlinVersion = project.getKotlinPluginVersion()
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:${kotlinVersion}"))
-    implementation(platform("org.junit:junit-bom:5.10.2"))
+    implementation(platform("org.junit:junit-bom:5.10.3"))
     implementation(platform("org.apache.logging.log4j:log4j-bom:2.23.1"))
 }
 
