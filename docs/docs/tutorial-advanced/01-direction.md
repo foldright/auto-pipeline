@@ -11,7 +11,7 @@ We can specify the direction on methods or interfaces.
 
 The default direction is `@Direction.FORWARD`, here's the rules:
 
-- Rule1: in the `@AutoPipelin` interface's method, we can:
+- Rule1: in the `@AutoPipeline` interface's method, we can:
     - add `Direction.FORWARD` to apply the interface's method, the annotated method will be called from head to tail
     - add `Direction.REVERSE` to apply the interface's method, the annotated method will be called from tail to head
     - if there's no `Direction annotation` to the method, the direction of pipeline will follow the `Direction` in the in the `@AutoPipeline` interface, see rule2
