@@ -15,7 +15,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.apache.commons:commons-lang3:3.15.0")
+    implementation("org.apache.commons:commons-lang3:3.17.0")
 
     /*
      * annotation processor dependencies
