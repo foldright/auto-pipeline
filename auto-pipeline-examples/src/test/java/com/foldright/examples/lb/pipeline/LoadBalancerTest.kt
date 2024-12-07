@@ -15,11 +15,9 @@ class LoadBalancerTest : AnnotationSpec() {
         override fun available(): Boolean = available
     }
 
-    private lateinit var pipeline: LoadBalancer
-
     @Test
     fun testDefaultHandler() {
-        pipeline = LoadBalancerPipeline()
+        val pipeline = LoadBalancerPipeline()
             .addLast(AvailableLoadBalancerHandler())
             .addLast(RandomLoadBalancerHandler())
 
