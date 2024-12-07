@@ -1,4 +1,4 @@
-# <div align="center"><a href="#"><img src="https://user-images.githubusercontent.com/1063891/233436006-857e06d6-90d1-42fa-ac5a-e953b80526de.png" alt="auto-pipeline 🚀"></a></div>
+# <div align="center"><a href="#"><img src="https://user-images.githubusercontent.com/1063891/233436006-857e06d6-90d1-42fa-ac5a-e953b80526de.png" alt="auto-pipeline��"></a></div>
 
 <p align="center">
 <a href="README.md">English</a> | <a href="README_zh-Hans.md">中文</a>
@@ -20,72 +20,65 @@
 <a href="https://gitpod.io/#https://github.com/foldright/auto-pipeline"><img src="https://img.shields.io/badge/Gitpod-ready--to--code-green?label=gitpod&logo=gitpod&logoColor=white" alt="gitpod: Ready to Code"></a>
 </p>
 
-`auto-pipeline` is a source code generator that auto generate the component's pipeline. Help you to keep your project smaller, simpler, and more extensible. 💡
+`auto-pipeline` 是一个代码生成器，用于自动生成组件的pipeline。帮助你保持项目更小、更简单、更具扩展性。💡
 
-`auto-pipeline` is an [`annotation-processor`](https://docs.oracle.com/javase/8/docs/api/javax/annotation/processing/package-summary.html) for `Pipeline` generation, which is inspired by
-Google's [`Auto`](https://github.com/google/auto). ❤️
+`auto-pipeline` 是一个用于生成 `Pipeline` 的[`注解处理器`](https://docs.oracle.com/javase/8/docs/api/javax/annotation/processing/package-summary.html)，灵感来自于 Google 的 [`Auto`](https://github.com/google/auto)。❤️
 
-for more information, please check out the [auto-pipeline documents](https://foldright.io/auto-pipeline/). 
+更多信息，请查看 [auto-pipeline 文档](https://foldright.io/auto-pipeline/)。
 
-## quick examples
+## 快速示例
 
-below is a brief introduction. please check the [examples project](auto-pipeline-examples), and it's test cases for details.
+以下是一个简要介绍。详细信息请查看 [示例项目](auto-pipeline-examples) 及其测试用例。
 
-## quick start
+## 快速开始
 
-`auto-pipeline` require java 8 or above.
+`auto-pipeline` 需要 Java 8 或更高版本。
 
-### 0. add `auto-pipeline` dependencies
+### 0. 添加 `auto-pipeline` 依赖
 
-for `maven` project:
+对于 `Maven` 项目：
 
 ```xml
 <dependencies>
     <!--
-        the auto-pipeline annotation processor will generate
-          the pipeline classes for the interface.
-        annotation processor dependency should be "provided" scope,
-          because it's only needed at compile time.
+        auto-pipeline-processor 会为接口生成 Pipeline。
+        并且scope 是 "provided"的， 因为它只在编译时需要。
     -->
     <dependency>
         <groupId>com.foldright.auto-pipeline</groupId>
         <artifactId>auto-pipeline-processor</artifactId>
-        <version>0.3.0</version>
+        <version>0.4.0</version>
         <scope>provided</scope>
     </dependency>
 </dependencies>
 ```
 
-for `gradle` project:
+对于 `Gradle` 项目：
 
 ```groovy
 /*
  * Gradle Kotlin DSL
  */
-// the auto-pipeline annotation will be used in your interface type
-compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.3.0")
-// the auto-pipeline annotation processor will generate the pipeline classes for the interface.
-// use "annotationProcessor" scope because it's only needed at annotation processing time.
-annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0")
+compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.4.0")
+// auto-pipeline 注解处理器将为接口生成管道类
+annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.4.0")
 
 /*
  * Gradle Groovy DSL
  */
-compileOnly 'com.foldright.auto-pipeline:auto-pipeline-annotations:0.3.0'
-annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0'
+compileOnly 'com.foldright.auto-pipeline:auto-pipeline-annotations:0.4.0'
+annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.4.0'
 ```
 
-`auto-pipeline` has published to maven central, click here
-to [find the latest version](https://search.maven.org/search?q=g:com.foldright.auto-pipeline).
+`auto-pipeline` 已发布到 Maven 中央仓库，[查看最新版本](https://search.maven.org/search?q=g:com.foldright.auto-pipeline)。
 
-### 1. using `@AutoPipeline` to auto generate pipeline for your interface
+### 1. 使用 `@AutoPipeline` 为接口自动生成 Pipeline
 
-annotate `@AutoPipeline` to your interface, and `auto-pipeline` will generate some java files for the interface at compile time.
+在你的接口上添加 `@AutoPipeline` 注解，`auto-pipeline` 将在编译时为该接口生成一些 Java 文件。
 
-let's check the [`ConfigSource`](auto-pipeline-examples/src/main/java/com/foldright/examples/config/ConfigSource.java) as an example:
+以 [`ConfigSource`](auto-pipeline-examples/src/main/java/com/foldright/examples/config/ConfigSource.java) 为例：
 
-given an interface named `ConfigSource`, the `ConfigSource` has the `get()` method, input a string as key and output a string as the value.
-like this:
+比如名为 `ConfigSource` 的接口，该接口有 `get()` 方法，像这样：
 
 ```java
 public interface ConfigSource {
@@ -93,9 +86,9 @@ public interface ConfigSource {
 }
 ```
 
-say, we want `ConfigSource#get()` has some extensibility, so we decide to apply the `chain of responsibility` pattern to it for extensibility.
+假设我们希望 `ConfigSource#get()` 具有一些扩展性，所以我们决定对其应用`Pipeline`模式以实现扩展。
 
-Now it's `auto-pipeline`'s turn to play a role, we simply add `@AutoPipelin` to `ConfigSource`：
+现在就让 `auto-pipeline` 出场，我们只需要在 `ConfigSource` 上添加 `@AutoPipeline`：
 
 ```java
 @AutoPipeline
@@ -104,19 +97,19 @@ public interface ConfigSource {
 }
 ```
 
-`auto-pipeline-processor` will auto generate pipeline java files for `ConfigSource` into subpackage `pipeline` when compiled:
+`auto-pipeline-processor` 在编译时会自动为 `ConfigSource` 在 `pipeline` package 中生成 Java 文件：
 
 - `ConfigSourceHandler`  
-  the responsibility interface we want to implement for extensibility
+  我们想要实现的责任接口以实现扩展性
 - `ConfigSourcePipeline`  
-  the chain
+  责任链
 - `ConfigSourceHandlerContext`
 - `AbstractConfigSourceHandlerContext`
 - `DefaultConfigSourceHandlerContext`
 
-### 2. implementing your handler for pipeline
+### 2. 为 Pipeline 实现你的处理器
 
-we can implement `MapConfigSourceHandler` and `SystemConfigSourceHandler` (they are all in the [ConfigSource handler example](auto-pipeline-examples/src/main/java/com/foldright/examples/config/handler)):
+我们可以实现 `MapConfigSourceHandler` 和 `SystemConfigSourceHandler`（它们都在 [ConfigSource handler 示例](auto-pipeline-examples/src/main/java/com/foldright/examples/config/handler) 中）：
 
 ```java
 public class MapConfigSourceHandler implements ConfigSourceHandler {
@@ -150,9 +143,9 @@ public class SystemConfigSourceHandler implements ConfigSourceHandler {
 }
 ```
 
-### 3. use the pipeline
+### 3. 使用 Pipeline
 
-create a `ConfigSourcePipeline` by composing `ConfigSourceHandler`s which can ben an entrance of the `ConfigSource`:
+通过组合 `ConfigSourceHandler` 创建一个 `ConfigSourcePipeline`，可以作为 `ConfigSource` 的入口：
 
 ```java
 Map<String, String> mapConfig = new HashMap<String, String>();
@@ -164,21 +157,14 @@ ConfigSource pipeline = new ConfigSourcePipeline()
         .addLast(SystemConfigSourceHandler.INSTANCE);
 ```
 
-
-now, we can use the `pipeline.get(...)` to invoke the chain! 🎉
+现在，我们可以使用 `pipeline.get(...)` 来调用责任链了！🎉
 
 ```java
 pipeline.get("hello");
-// get value "world"
-// from mapConfig / mapConfigSourceHandler
+//  "world"
 
 pipeline.get("java.specification.version")
-// get value "1.8"
-// from system properties / SystemConfigSourceHandler
+// "1.8"
 ```
 
-check the runnable [test case](auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt) for details.
-
-## License
-
-Apache License 2.0
+详细信息请查看可运行的[单测用例](auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt)
