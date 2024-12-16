@@ -39,7 +39,7 @@ jobs:
       with:
         node-version: '20.x'
 
-    - run: cd docs && npm ci
+    - run: cd docs && npm install
     - run: cd docs && npm run build
     - run: cp -R target/site/apidocs docs/build/
 
