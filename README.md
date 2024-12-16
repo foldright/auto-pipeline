@@ -20,22 +20,25 @@
 <a href="https://gitpod.io/#https://github.com/foldright/auto-pipeline"><img src="https://img.shields.io/badge/Gitpod-ready--to--code-green?label=gitpod&logo=gitpod&logoColor=white" alt="gitpod: Ready to Code"></a>
 </p>
 
-`auto-pipeline` is a source code generator that auto generate the component's pipeline. Help you to keep your project smaller, simpler, and more extensible. 💡
+## Overview
+`auto-pipeline` is a source code generator that automatically generates pipeline components for your interfaces. It helps keep your project smaller, simpler, and more extensible by leveraging the Chain of Responsibility pattern. 💡
 
-`auto-pipeline` is an [`annotation-processor`](https://docs.oracle.com/javase/8/docs/api/javax/annotation/processing/package-summary.html) for `Pipeline` generation, which is inspired by
-Google's [`Auto`](https://github.com/google/auto). ❤️
+`auto-pipeline` is implemented as an [`annotation-processor`](https://docs.oracle.com/javase/8/docs/api/javax/annotation/processing/package-summary.html), inspired by Google's [`Auto`](https://github.com/google/auto). ❤️
 
-for more information, please check out the [auto-pipeline documents](https://foldright.io/auto-pipeline/). 
+## Features
+- 🚀 **Zero Runtime Dependencies** - Only needed at compile time
+- 🎯 **Simple to Use** - Just add one annotation to your interface
+- 🔌 **Highly Extensible** - Based on Chain of Responsibility pattern
+- 🛠 **Type Safe** - Generates type-safe Java code
+- 📦 **Lightweight** - No reflection, no runtime overhead
 
-## quick examples
+## Quick Start
 
-below is a brief introduction. please check the [examples project](auto-pipeline-examples), and it's test cases for details.
+### Prerequisites
+- Java 8 or above
+- Maven or Gradle build system
 
-## quick start
-
-`auto-pipeline` require java 8 or above.
-
-### 0. add `auto-pipeline` dependencies
+### 1. Add Dependencies
 
 for `maven` project:
 
@@ -78,11 +81,8 @@ annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0'
 `auto-pipeline` has published to maven central, click here
 to [find the latest version](https://search.maven.org/search?q=g:com.foldright.auto-pipeline).
 
-### 1. using `@AutoPipeline` to auto generate pipeline for your interface
-
-annotate `@AutoPipeline` to your interface, and `auto-pipeline` will generate some java files for the interface at compile time.
-
-let's check the [`ConfigSource`](auto-pipeline-examples/src/main/java/com/foldright/examples/config/ConfigSource.java) as an example:
+### 2. Annotate Your Interface
+Let's look at a simple example using a `ConfigSource` interface:
 
 given an interface named `ConfigSource`, the `ConfigSource` has the `get()` method, input a string as key and output a string as the value.
 like this:
@@ -114,9 +114,8 @@ public interface ConfigSource {
 - `AbstractConfigSourceHandlerContext`
 - `DefaultConfigSourceHandlerContext`
 
-### 2. implementing your handler for pipeline
-
-we can implement `MapConfigSourceHandler` and `SystemConfigSourceHandler` (they are all in the [ConfigSource handler example](auto-pipeline-examples/src/main/java/com/foldright/examples/config/handler)):
+### 3. Implement Handlers
+We can implement handlers to add functionality to our pipeline:
 
 ```java
 public class MapConfigSourceHandler implements ConfigSourceHandler {
@@ -150,9 +149,8 @@ public class SystemConfigSourceHandler implements ConfigSourceHandler {
 }
 ```
 
-### 3. use the pipeline
-
-create a `ConfigSourcePipeline` by composing `ConfigSourceHandler`s which can ben an entrance of the `ConfigSource`:
+### 4. Use the Pipeline
+Create and use the pipeline by composing handlers:
 
 ```java
 Map<String, String> mapConfig = new HashMap<String, String>();
@@ -163,7 +161,6 @@ ConfigSource pipeline = new ConfigSourcePipeline()
         .addLast(mapConfigSourceHandler)
         .addLast(SystemConfigSourceHandler.INSTANCE);
 ```
-
 
 now, we can use the `pipeline.get(...)` to invoke the chain! 🎉
 
@@ -179,6 +176,11 @@ pipeline.get("java.specification.version")
 
 check the runnable [test case](auto-pipeline-examples/src/test/java/com/foldright/examples/config/pipeline/ConfigSourceTest.kt) for details.
 
-## License
+## Documentation
+For more detailed information and advanced usage, please check out the [auto-pipeline documentation](https://foldright.io/auto-pipeline/).
 
+## Examples
+For more examples and use cases, check out our [examples project](auto-pipeline-examples) and its test cases.
+
+## License
 Apache License 2.0
