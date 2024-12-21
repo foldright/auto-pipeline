@@ -1,4 +1,4 @@
-# <div align="center"><a href="#"><img src="https://user-images.githubusercontent.com/1063891/233436006-857e06d6-90d1-42fa-ac5a-e953b80526de.png" alt="auto-pipeline 🚀"></a></div>
+# <div align="center"><a href="#"><img src="https://github.com/user-attachments/assets/358ed4a2-cfe2-4a63-87d5-8c7c9bf3362f" alt="auto-pipeline 🚀"></a></div>
 
 <p align="center">
 <a href="README.md">English</a> | <a href="README_zh-Hans.md">中文</a>
