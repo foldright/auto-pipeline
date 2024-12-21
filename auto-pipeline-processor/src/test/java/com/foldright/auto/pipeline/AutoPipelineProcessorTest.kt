@@ -40,6 +40,58 @@ class AutoPipelineProcessorTest : AnnotationSpec() {
         }
     }
 
+    @OptIn(ExperimentalCompilerApi::class)
+    @Test
+    fun test_AutoPipelineProcessor_Duplex() {
+        val compileResult = KotlinCompilation().apply {
+            sources = listOf(javaSourceFileOnClassPath("test1/RPC.java"))
+            annotationProcessors = listOf(AutoPipelineProcessor())
+
+            inheritClassPath = true
+
+            // see compile diagnostics in real time?
+            verbose = false
+
+            // set work dir via `io.kotest.engine.spec.TempdirKt.tempdir`
+            // so auto delete the temp dir after test
+            workingDir = tempdir(AutoPipelineProcessorTest::class.qualifiedName)
+        }.compile()
+
+        compileResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+        val sourcesGenerated = compileResult.sourcesGeneratedByAnnotationProcessor
+        sourcesGenerated shouldHaveSize 5
+        sourcesGenerated.forEach {
+            println("\ncontent of generated ${it.name}(${it.canonicalPath}):\n${it.readText()}")
+        }
+    }
+
+    @OptIn(ExperimentalCompilerApi::class)
+    @Test
+    fun test_AutoPipelineProcessor_Generic() {
+        val compileResult = KotlinCompilation().apply {
+            sources = listOf(javaSourceFileOnClassPath("test1/Channel.java"))
+            annotationProcessors = listOf(AutoPipelineProcessor())
+
+            inheritClassPath = true
+
+            // see compile diagnostics in real time?
+            verbose = false
+
+            // set work dir via `io.kotest.engine.spec.TempdirKt.tempdir`
+            // so auto delete the temp dir after test
+            workingDir = tempdir(AutoPipelineProcessorTest::class.qualifiedName)
+        }.compile()
+
+        compileResult.exitCode shouldBe KotlinCompilation.ExitCode.OK
+
+        val sourcesGenerated = compileResult.sourcesGeneratedByAnnotationProcessor
+        sourcesGenerated shouldHaveSize 5
+        sourcesGenerated.forEach {
+            println("\ncontent of generated ${it.name}(${it.canonicalPath}):\n${it.readText()}")
+        }
+    }
+
     @Suppress("SameParameterValue")
     private fun javaSourceFileOnClassPath(filePath: String): SourceFile = SourceFile.java(
         File(filePath).name,
