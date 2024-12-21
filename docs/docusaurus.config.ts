@@ -74,6 +74,7 @@ const config: Config = {
         },
         {to: '/docs/tutorial-basics/quick-start', label: 'Quick Start', position: 'left'},
         {to: '/docs/tutorial-basics/examples', label: 'Examples', position: 'left'},
+        {to: '/apidocs', label: 'api', position: 'left', target: '_blank'},
         {
           href: 'https://github.com/foldright/auto-pipeline',
           label: 'GitHub',
