@@ -15,7 +15,8 @@ function HomepageHeader() {
             <Heading as="h1" className="hero__title">
                 {siteConfig.title}
             </Heading>
-            <img src="img/logo.svg" alt="autopipeline Logo" className={styles.logo} style={{maxWidth: '20vh'}}/>
+            {/*<img src="img/logo.svg" alt="autopipeline Logo" className={styles.logo} style={{maxWidth: '20vh'}}/>*/}
+            <img src="https://github.com/user-attachments/assets/358ed4a2-cfe2-4a63-87d5-8c7c9bf3362f" alt="autopipeline Logo" className={styles.logo} style={{maxWidth: '20vh'}}/>
             <p className="hero__subtitle">
                 {siteConfig.tagline} <br/>
                 {siteConfig.customFields.tagline2 as string}

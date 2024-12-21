@@ -14,8 +14,8 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Just annotate your interface with <code>AutoPipeline</code> annotation,
-        and enjoy the pipeline feature of the component after compilation. Simple and easy!
+        Transform your components with minimal effort - simply add the <code>@AutoPipeline</code> annotation 
+        and let the magic happen during compilation. Experience the power of pipeline architecture without the complexity!
       </>
     ),
   },
@@ -24,8 +24,9 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-      The generated Pipeline code exhibits excellent scalability, composability, and maintainability.
-          Just take a look at the examples and you'll see!
+        Unlock unlimited potential with the pipeline pattern. The generated code follows best practices 
+        for scalability and modularity, making it effortless to extend and maintain your components. 
+        Dive into our examples to discover the possibilities!
       </>
     ),
   },
@@ -34,8 +35,9 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Only needed Auto Pipeline at compile time, all the generated code
-        doesn't dependency anything except the java sdk.
+        Keep your runtime clean and efficient. Auto Pipeline only works its magic during compilation, 
+        and the generated code relies solely on the Java SDK. No external dependencies, no runtime overhead 
+        - just pure, efficient code.
       </>
     ),
   },

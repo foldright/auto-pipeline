@@ -134,8 +134,7 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 
   customFields: {
-    //tagline2: "Keep your project smaller, simpler, and more extensible.💡",
-    tagline2: "auto generate your component's pipeline code 😁",
+    tagline2: "Write less, do more - Automatic Pipeline code generation for Java",
   },
 };
 
