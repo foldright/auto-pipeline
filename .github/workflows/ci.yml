@@ -17,7 +17,7 @@ jobs:
     timeout-minutes: 5
     strategy:
       matrix:
-        os: [ ubuntu-20.04, windows-2022 ]
+        os: [ ubuntu-24.04, windows-2022 ]
         java: [ 8, 21 ]
       fail-fast: false
       max-parallel: 32
