@@ -24,7 +24,7 @@ jobs:
     name: CI on JDK ${{ matrix.java }} OS ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-java@v4
         with:
           distribution: zulu
