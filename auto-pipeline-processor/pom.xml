@@ -58,8 +58,8 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>dev.zacsweers.kctfork</groupId>
-			<artifactId>core</artifactId>
+			<groupId>com.google.testing.compile</groupId>
+			<artifactId>compile-testing</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
