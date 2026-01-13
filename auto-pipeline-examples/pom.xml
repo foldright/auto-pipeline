@@ -43,13 +43,26 @@
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
-			<!--
-				annotation processor dependency should be "provided" scope.
-			-->
 			<groupId>com.foldright.auto-pipeline</groupId>
-			<artifactId>auto-pipeline-processor</artifactId>
+			<artifactId>auto-pipeline-annotations</artifactId>
 			<version>${project.version}</version>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.foldright.auto-pipeline</groupId>
+							<artifactId>auto-pipeline-processor</artifactId>
+							<version>${project.version}</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

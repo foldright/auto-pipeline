@@ -40,17 +40,31 @@
 
 ```xml
 <dependencies>
-    <!--
-        auto-pipeline-processor 会为接口生成 Pipeline。
-        并且scope 是 "provided"的， 因为它只在编译时需要。
-    -->
+    <!-- @AutoPipeline 注解 -->
     <dependency>
         <groupId>com.foldright.auto-pipeline</groupId>
-        <artifactId>auto-pipeline-processor</artifactId>
+        <artifactId>auto-pipeline-annotations</artifactId>
         <version>0.4.0</version>
-        <scope>provided</scope>
     </dependency>
 </dependencies>
+
+<build>
+    <plugins>
+        <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+                <!-- 配置注解处理器 -->
+                <annotationProcessorPaths>
+                    <path>
+                        <groupId>com.foldright.auto-pipeline</groupId>
+                        <artifactId>auto-pipeline-processor</artifactId>
+                        <version>0.4.0</version>
+                    </path>
+                </annotationProcessorPaths>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 ```
 
 对于 `Gradle` 项目：

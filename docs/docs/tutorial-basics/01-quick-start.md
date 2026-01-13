@@ -8,7 +8,7 @@ It's very easy to use `Auto-Pipeline`, just follow the steps.
 ## Step1. add dependency
 
 `auto-pipeline` has published to maven central, click here
-to [find the latest version](https://search.maven.org/search?q=g:com.foldright.auto-pipeline). current the latest version is `0.3.0`
+to [find the latest version](https://search.maven.org/search?q=g:com.foldright.auto-pipeline). current the latest version is `0.4.0`
 
 
 import Tabs from '@theme/Tabs';
@@ -17,35 +17,59 @@ import TabItem from '@theme/TabItem';
 <Tabs>
   <TabItem value="Maven" label="Maven" default>
     ```xml title="pom.xml"
-    <dependency>
-        <groupId>com.foldright.auto-pipeline</groupId>
-        <artifactId>auto-pipeline-processor</artifactId>
-        <version>0.3.0</version>
-        <scope>provided</scope>
-    </dependency>
+    <dependencies>
+        <!-- The @AutoPipeline annotation -->
+        <dependency>
+            <groupId>com.foldright.auto-pipeline</groupId>
+            <artifactId>auto-pipeline-annotations</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <!-- Configure annotation processor -->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.foldright.auto-pipeline</groupId>
+                            <artifactId>auto-pipeline-processor</artifactId>
+                            <version>0.4.0</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     ```
   </TabItem>
   <TabItem value="Gradle-Kotlin" label="Gradle (Kotlin DSL)">
     ```kotlin title="build.gradle.kts"
     // the auto-pipeline annotation will be used in your interface type
-    compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.3.0")
+    compileOnly("com.foldright.auto-pipeline:auto-pipeline-annotations:0.4.0")
     // the auto-pipeline annotation processor will generate the pipeline classes for the interface.
     // use "annotationProcessor" scope because it's only needed at annotation processing time.
-    annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0")
+    annotationProcessor("com.foldright.auto-pipeline:auto-pipeline-processor:0.4.0")
     ```
   </TabItem>
   <TabItem value="Gradle-Gradle" label="Gradle (Groovy DSL)">
     ```groovy title="build.gradle"
-    compileOnly 'com.foldright.auto-pipeline:auto-pipeline-annotations:0.3.0'
-    annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.3.0'
+    compileOnly 'com.foldright.auto-pipeline:auto-pipeline-annotations:0.4.0'
+    annotationProcessor 'com.foldright.auto-pipeline:auto-pipeline-processor:0.4.0'
     ```
   </TabItem>
 </Tabs>
 
-:::info[note the dependency scope!]
-The auto-pipeline annotation processor will generate the pipeline classes for the interface.
+:::info[Recommended Configuration for Maven]
+For Maven projects, it's recommended to use `<annotationProcessorPaths>` configuration instead of adding the processor as a dependency with `provided` scope. This approach:
+- ✅ Follows Maven's official best practices
+- ✅ Clearly separates compile-time annotations from annotation processors
+- ✅ Improves security by explicitly declaring which processors should run
+- ✅ Avoids potential classpath pollution
 
-Annotation processor dependency should be "provided" scope, because it's only needed at compile time.
+For more details, see the [Maven Compiler Plugin documentation](https://maven.apache.org/plugins/maven-compiler-plugin/examples/annotation-processor.html).
 :::
 
 ## Step2. Using `@AutoPipeline`
