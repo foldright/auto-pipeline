@@ -378,7 +378,7 @@
 				</plugin>
 				<plugin>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.5.0</version>
+					<version>3.6.2</version>
 				</plugin>
 				<plugin>
 					<groupId>pl.project13.maven</groupId>
